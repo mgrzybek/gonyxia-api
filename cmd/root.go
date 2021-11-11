@@ -4,9 +4,9 @@ import (
 	"path/filepath"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 
 	homedir "github.com/mitchellh/go-homedir"
-	"github.com/spf13/viper"
 )
 
 var cfgFile string
@@ -28,6 +28,9 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(initConfig)
+
+	rootCmd.PersistentFlags().StringP("log-level", "l", viper.GetString("LOG_LEVEL"), "Level of verbosity.")
+	rootCmd.PersistentFlags().StringP("log-format", "f", viper.GetString("LOG_FORMAT"), "Log format.")
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -38,7 +41,7 @@ func initConfig() {
 	} else {
 		// Find home directory.
 		home, err := homedir.Dir()
-		path := filepath.Join(home, ".onyxiactl")
+		path := filepath.Join(home, ".onyxia-api")
 		cobra.CheckErr(err)
 		viper.AddConfigPath(path)
 		viper.SetConfigName("config")
