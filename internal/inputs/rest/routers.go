@@ -9,8 +9,10 @@
 package rest
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
+	"regexp"
 	"strings"
 	"time"
 
@@ -58,6 +60,43 @@ func Logger(inner http.Handler, name string) http.Handler {
 			"process_time_seconds": time.Since(start),
 		}).Info("access")
 	})
+}
+
+func writeHttpResponse(w http.ResponseWriter, status int, message map[string]string) {
+	w.WriteHeader(status)
+	jmsg, _ := writeJsonResponse(message)
+	fmt.Fprintf(w, "%s", jmsg)
+}
+
+func validateAuthorizationHeader(w http.ResponseWriter, r *http.Request) bool {
+	message := make(map[string]string)
+	message["message"] = "Given token is invalid."
+
+	if len(r.Header.Get("Authorization")) < 7 {
+		log.Warn(message["message"])
+		writeHttpResponse(w, http.StatusUnauthorized, message)
+		return false
+	}
+
+	log.Debug("Authorization header: " + r.Header.Get("Authorization"))
+	matched, err := regexp.MatchString(`^Bearer [A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$`, r.Header.Get("Authorization"))
+
+	if err == nil && matched == true {
+		log.Debug("Given token is valid")
+		return true
+	}
+
+	log.Warn(message["message"] + " Header: " + r.Header["Authorization"][0])
+	writeHttpResponse(w, http.StatusUnauthorized, message)
+	return false
+}
+
+func writeJsonResponse(resp map[string]string) ([]byte, error) {
+	j, err := json.Marshal(resp)
+	if err != nil {
+		log.Error("Error happened in JSON marshal. Err: %s", err)
+	}
+	return j, err
 }
 
 func Index(w http.ResponseWriter, r *http.Request) {
