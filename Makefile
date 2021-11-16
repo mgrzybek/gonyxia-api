@@ -1,7 +1,7 @@
 .PHONY: help
 help: ## This help message
 	@awk -F: \
-		'/^([a-z-]+): \w*\s*## (.+)$/ {gsub("[a-z ]*## ","") ; print $1"\t"$2}' \
+		'/^([a-z-]+): \w*\s*## (.+)$$/ {gsub("[a-z ]*## ","") ; print $$1"\t"$$2}' \
 		Makefile \
 	| expand -t20 \
 	| sort
