@@ -38,8 +38,10 @@ func configureLogger(level, format string) {
 	switch strings.ToLower(level) {
 	case "trace":
 		log.SetLevel(log.TraceLevel)
+		log.SetReportCaller(true)
 	case "debug":
 		log.SetLevel(log.DebugLevel)
+		log.SetReportCaller(true)
 	case "info":
 		log.SetLevel(log.InfoLevel)
 	case "warn":
