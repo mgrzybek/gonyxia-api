@@ -4,8 +4,8 @@ import (
 	log "github.com/sirupsen/logrus"
 	"net/http"
 
-	"gonyxia-api/internal/core"
-	"gonyxia-api/internal/inputs/rest"
+	"github.con/mgrzybek/gonyxia-api/internal/core"
+	"github.con/mgrzybek/gonyxia-api/internal/inputs/rest"
 )
 
 type RestService struct {

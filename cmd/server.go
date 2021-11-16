@@ -6,9 +6,9 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	"gonyxia-api/internal/core"
-	"gonyxia-api/internal/inputs"
-	//"gonyxia-api/internal/backoffice"
+	"github.con/mgrzybek/gonyxia-api/internal/core"
+	"github.con/mgrzybek/gonyxia-api/internal/inputs"
+	//"github.con/mgrzybek/gonyxia-api/internal/backoffice"
 
 	log "github.com/sirupsen/logrus"
 )
