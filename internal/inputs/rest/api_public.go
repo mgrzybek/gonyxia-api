@@ -10,6 +10,7 @@ package rest
 
 import (
 	"net/http"
+	"strings"
 )
 
 func Configuration(w http.ResponseWriter, r *http.Request) {
@@ -29,7 +30,19 @@ func GetCatalogs(w http.ResponseWriter, r *http.Request) {
 
 func GetIP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	w.WriteHeader(http.StatusNotImplemented)
+
+	message := make(map[string]string)
+	ip := r.Header.Get("X-Real-Ip")
+
+	if ip == "" {
+		ip = r.Header.Get("X-Forwarded-For")
+	}
+	if ip == "" {
+		ip = r.RemoteAddr
+	}
+
+	message["ip"] = strings.Split(ip, ":")[0]
+	writeHttpResponse(w, http.StatusOK, message)
 }
 
 func GetPackage(w http.ResponseWriter, r *http.Request) {
