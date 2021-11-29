@@ -1,0 +1,34 @@
+- hosts: all
+  become: true
+  become_method: sudo
+  vars:
+    token_file: /var/lib/rancher/k3s/server/node-token
+    vagrant_token_file: /vagrant/token
+    k3s_url: https://get.k3s.io
+  tasks:
+    - name: k3s | Check k3s
+      command: k3s kubectl get node
+      failed_when: false
+      register: k3s_result
+
+    - name: k3s | Install k3s
+      when: k3s_result is failure
+      block:
+      - name: k3s | Install curl
+        pkg: name=curl state=present
+
+      - name: k3s | Install k3s
+        shell: curl -sfL {{ k3s_url }} | sh -
+
+    - name: k3s | Wait for k3s to be ready
+      command: k3s kubectl get node
+      register: get_nodes
+      until: get_nodes is success
+      retries: 10
+      delay: 10
+
+    - name: k3s | Write token into the share folden
+      copy:
+        remote_src: true
+        src: "{{ token_file }}"
+        dest: "{{ vagrant_token_file }}"

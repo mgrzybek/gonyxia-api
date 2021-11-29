@@ -6,10 +6,16 @@ help: ## This help message
 	| expand -t20 \
 	| sort
 
+##############################################################################
+# Tools
+
 .PHONY: pre-commit
 pre-commit: ## Run pre-commit compliance tests
 	pre-commit install
 	pre-commit run --all-files
+
+##############################################################################
+# Go
 
 .PHONY: test
 test: ## Run go test
@@ -22,6 +28,26 @@ get: ## Download required modules
 onyxia-api: test ## Test and build the program
 	go build -o onyxya-api main.go
 
+##############################################################################
+# Vagrant
+
+.PHONY: vagrant-variables
+vagrant-variables: ## Test vagrant env variables
+	@echo -n "Checking VAGRANT_BOX_NAME... "
+	@[ ! "$$VAGRANT_BOX_NAME" = "" ] && echo OK
+
+.PHONY: vagrant-destroy
+vagrant-destroy: ## Destroy vagrant boxes
+	@vagrant destroy -f
+
+.PHONY: vagrant-vbox
+vagrant-vbox: vagrant-variables ## Test the api using vagrant and virtualbox
+	@vagrant up --provider=virtualbox
+	@vagrant provision
+
+##############################################################################
+# All
+
 .PHONY: all
-all: onyxia-api ## Test and build
+all: get onyxia-api ## Test and build
 	@echo
