@@ -34,7 +34,7 @@ onyxia-api: test ## Test and build the program
 .PHONY: vagrant-variables
 vagrant-variables: ## Test vagrant env variables
 	@echo -n "Checking VAGRANT_BOX_NAME... "
-	@[ ! "$$VAGRANT_BOX_NAME" = "" ] && echo OK
+	@test -z "$$VAGRANT_BOX_NAME" || echo OK
 
 .PHONY: vagrant-destroy
 vagrant-destroy: ## Destroy vagrant boxes
