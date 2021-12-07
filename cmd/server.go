@@ -8,9 +8,9 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
+	"github.com/mgrzybek/gonyxia-api/internal/backoffice"
 	"github.com/mgrzybek/gonyxia-api/internal/core"
 	"github.com/mgrzybek/gonyxia-api/internal/inputs"
-	"github.com/mgrzybek/gonyxia-api/internal/backoffice"
 
 	log "github.com/sirupsen/logrus"
 )

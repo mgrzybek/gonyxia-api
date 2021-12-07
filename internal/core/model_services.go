@@ -8,13 +8,10 @@
  */
 package core
 
-import (
-)
-
 type Services struct {
 	Server *Server `json:"server"`
 
-	Driver *OrchestratorAdapter
+	Driver OrchestratorAdapter
 
 	Type_ string `json:"type,omitempty"`
 
