@@ -9,13 +9,21 @@ import (
 )
 
 type RestService struct {
-	Bind_addr    string
-	Publish_addr string
-	Engine       core.Engine
+	bind_addr    string
+	publish_addr string
+	engine       *core.Engine
+}
+
+func NewRestService(b,p string, e *core.Engine) RestService {
+	return RestService{
+		bind_addr: b,
+		publish_addr: p,
+		engine: e,
+	}
 }
 
 func (r *RestService) Run() {
-	log.Info("Server started on " + r.Bind_addr)
-	router := rest.NewRouter()
-	log.Fatal(http.ListenAndServe(r.Bind_addr, router))
+	log.Info("Server started on " + r.bind_addr)
+	router := rest.NewRouter(r.engine)
+	log.Fatal(http.ListenAndServe(r.bind_addr, router))
 }

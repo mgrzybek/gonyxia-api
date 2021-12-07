@@ -9,8 +9,12 @@
 package rest
 
 import (
+//	"encoding/json"
+//	"fmt"
 	"net/http"
 	"strings"
+
+//	log "github.com/sirupsen/logrus"
 )
 
 func Configuration(w http.ResponseWriter, r *http.Request) {
@@ -52,7 +56,17 @@ func GetPackage(w http.ResponseWriter, r *http.Request) {
 
 func GetRegions(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	w.WriteHeader(http.StatusNotImplemented)
+/*
+	result, err := json.Marshal(engine.Regions)
+
+	if err != nil {
+		log.Error(err)
+		w.WriteHeader(http.StatusInternalServerError)
+	}
+
+	fmt.Fprintf(w, "%s", result)
+*/
+	w.WriteHeader(http.StatusOK)
 }
 
 func Healthcheck(w http.ResponseWriter, r *http.Request) {

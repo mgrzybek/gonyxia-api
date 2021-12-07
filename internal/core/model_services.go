@@ -8,7 +8,14 @@
  */
 package core
 
+import (
+)
+
 type Services struct {
+	Server *Server `json:"server"`
+
+	Driver *OrchestratorAdapter
+
 	Type_ string `json:"type,omitempty"`
 
 	SingleNamespace bool `json:"singleNamespace,omitempty"`
@@ -35,3 +42,10 @@ type Services struct {
 
 	DefaultConfiguration *DefaultConfiguration `json:"defaultConfiguration,omitempty"`
 }
+
+// if Services.server is nil then in-cluster mode
+/*
+func (c *Services) Ping() error {
+
+}
+*/

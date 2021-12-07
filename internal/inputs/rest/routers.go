@@ -19,6 +19,8 @@ import (
 	"github.com/gorilla/mux"
 
 	log "github.com/sirupsen/logrus"
+
+	"github.com/mgrzybek/gonyxia-api/internal/core"
 )
 
 type Route struct {
@@ -30,7 +32,7 @@ type Route struct {
 
 type Routes []Route
 
-func NewRouter() *mux.Router {
+func NewRouter(e *core.Engine) *mux.Router {
 	router := mux.NewRouter().StrictSlash(true)
 	for _, route := range routes {
 		var handler http.Handler
@@ -44,9 +46,14 @@ func NewRouter() *mux.Router {
 			Handler(handler)
 	}
 
+	engine = e
 	return router
 }
 
+/*
+ * TODO: deal with tracing
+ * https://fernando-bandeira.medium.com/building-apis-with-go-part-3-instrumentation-and-error-handling-daba9385e3ec
+ */
 func Logger(inner http.Handler, name string) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
@@ -103,6 +110,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Hello World!")
 }
 
+var engine *core.Engine
 var routes = Routes{
 	Route{
 		"Index",

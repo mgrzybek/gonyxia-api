@@ -1,8 +1,13 @@
 package core
 
 type Engine struct {
+	regions []Region
+	catalogs []Catalog
 }
 
-type Credentials struct {
-	user, password, token string
+func NewEngine(r []Region, c []Catalog) Engine {
+	return Engine{
+		regions: r,
+		catalogs: c,
+	}
 }

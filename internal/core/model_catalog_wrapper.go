@@ -8,8 +8,8 @@
  */
 package core
 
-type CatalogWrapper struct {
-	Catalog *CatalogWrapper `json:"catalog,omitempty"`
+type Catalog struct {
+//	Catalog *CatalogWrapper `json:"catalog,omitempty"`
 
 	Id string `json:"id,omitempty"`
 
