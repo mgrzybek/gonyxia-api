@@ -9,12 +9,12 @@
 package rest
 
 import (
-//	"encoding/json"
-//	"fmt"
+	"encoding/json"
+	"fmt"
 	"net/http"
 	"strings"
 
-//	log "github.com/sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 )
 
 func Configuration(w http.ResponseWriter, r *http.Request) {
@@ -56,8 +56,8 @@ func GetPackage(w http.ResponseWriter, r *http.Request) {
 
 func GetRegions(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-/*
-	result, err := json.Marshal(engine.Regions)
+
+	result, err := json.Marshal(engine.GetRegions())
 
 	if err != nil {
 		log.Error(err)
@@ -65,7 +65,7 @@ func GetRegions(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Fprintf(w, "%s", result)
-*/
+
 	w.WriteHeader(http.StatusOK)
 }
 

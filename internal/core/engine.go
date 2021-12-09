@@ -11,3 +11,13 @@ func NewEngine(r []Region, c []Catalog) Engine {
 		catalogs: c,
 	}
 }
+
+func (e Engine) GetRegions() []Region {
+	r := e.regions
+
+	for i, _ := range r {
+		r[i].Services.Driver = nil
+	}
+
+	return r
+}
