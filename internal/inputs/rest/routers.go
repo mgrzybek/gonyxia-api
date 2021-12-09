@@ -23,6 +23,8 @@ import (
 	"github.com/mgrzybek/gonyxia-api/internal/core"
 )
 
+type ctxKey struct{}
+
 type Route struct {
 	Name        string
 	Method      string

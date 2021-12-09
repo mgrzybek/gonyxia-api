@@ -24,14 +24,28 @@ func Configuration(w http.ResponseWriter, r *http.Request) {
 
 func GetCatalogById(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	w.WriteHeader(http.StatusNotImplemented)
+
+	id := r.Context().Value(ctxKey{}).([]string)[0]
+	result, err := json.Marshal(engine.GetCatalogById(id))
+	if err != nil {
+		log.Error(err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	if len(result) > 0 {
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprintf(w, "%s", result)
+		return
+	}
+
+	w.WriteHeader(http.StatusNotFound)
 }
 
 func GetCatalogs(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 
 	result, err := json.Marshal(engine.GetCatalogs())
-
 	if err != nil {
 		log.Error(err)
 		w.WriteHeader(http.StatusInternalServerError)
@@ -39,7 +53,7 @@ func GetCatalogs(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprintf(w, "%s", result)
 
-	w.WriteHeader(http.StatusNotImplemented)
+	w.WriteHeader(http.StatusOK)
 }
 
 func GetIP(w http.ResponseWriter, r *http.Request) {

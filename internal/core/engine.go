@@ -27,6 +27,15 @@ func (e Engine) GetCatalogs() []Catalog {
 	return e.catalogs
 }
 
+func (e Engine) GetCatalogById(id string) *Catalog {
+	for i, _ := range e.catalogs {
+		if e.catalogs[i].Id == id {
+			return &e.catalogs[i]
+		}
+	}
+	return nil
+}
+
 func (e Engine) GetRegions() []Region {
 	r := e.regions
 
