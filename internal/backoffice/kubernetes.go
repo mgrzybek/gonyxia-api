@@ -8,8 +8,10 @@ import (
 	"fmt"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
+	"k8s.io/client-go/tools/clientcmd"
 
 	"github.com/mgrzybek/gonyxia-api/internal/core"
 
@@ -24,21 +26,19 @@ type Kubernetes struct {
  * Constructors
  */
 
-func NewKubernetes(user, password, token *string) Kubernetes {
-	if ( user == nil || password == nil ) && token == nil {
-		return newInClusterKubernetes()
-	}
-	return newOutClusterKubernetes(user, password, token)
-}
+func NewKubernetes(configFilePath *string) (Kubernetes, error) {
+	var config *rest.Config
+	var err error
 
-func newInClusterKubernetes() Kubernetes {
-	log.Trace("Create an in-cluster Kubernetes object")
-	config, err := rest.InClusterConfig()
+	if configFilePath == nil {
+		config, err = newInClusterConfigKubernetes()
+	} else {
+		config, err = newOutClusterConfigKubernetes(configFilePath)
+	}
 	if err != nil {
 		log.Error(err.Error())
 	}
 
-	// creates the clientset
 	clientset, err := kubernetes.NewForConfig(config)
 	if err != nil {
 		log.Error(err.Error())
@@ -47,14 +47,26 @@ func newInClusterKubernetes() Kubernetes {
 	result := Kubernetes{
 		clientset: clientset,
 	}
-	result.Health()
 
-	return result
+	return result, result.Health()
 }
 
-func newOutClusterKubernetes(user, password, token *string) Kubernetes {
+func newInClusterConfigKubernetes() (*rest.Config, error) {
+	log.Trace("Create an in-cluster Kubernetes object")
+	config, err := rest.InClusterConfig()
+	if err != nil {
+		log.Error(err.Error())
+	}
+	return config, err
+}
+
+func newOutClusterConfigKubernetes(configFilePath *string) (*rest.Config, error) {
 	log.Trace("Create an out-cluster Kubernetes object")
-	return Kubernetes{}
+	config, err := clientcmd.BuildConfigFromFlags("", *configFilePath)
+	if err != nil {
+		log.Error(err.Error())
+	}
+	return config, err
 }
 
 /*
@@ -73,7 +85,7 @@ func (k Kubernetes) Health() error {
 func (k Kubernetes) UserCreate() error {
 	return fmt.Errorf("Not implemented")
 }
-func (k Kubernetes) UserDelete() error	{
+func (k Kubernetes) UserDelete() error {
 	return fmt.Errorf("Not implemented")
 }
 

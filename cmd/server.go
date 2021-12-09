@@ -69,13 +69,13 @@ func loadCatalogsFile(f string) []core.Catalog {
 	data, err := ioutil.ReadFile(f)
 	log.Trace("Catalog JSON data: %s", string(data))
 	if err != nil {
-		log.Fatal("cannot load catalogs configuration: %s", err)
+		log.Fatal("cannot load catalogs configuration: ", err)
 	}
 
 	var catalogs []core.Catalog
 	err = json.Unmarshal(data, &catalogs)
 	if err != nil {
-		log.Fatal("cannot load catalogs configuration: %s", err)
+		log.Fatal("cannot load catalogs configuration: ", err)
 	}
 
 	log.Trace("Catalogs from configuration: %#v", catalogs)
@@ -86,27 +86,25 @@ func loadRegionsFile(f string) []core.Region {
 	data, err := ioutil.ReadFile(f)
 	log.Trace("Region JSON data: %s", string(data))
 	if err != nil {
-		log.Fatal("cannot load regions configuration: %s", err)
+		log.Fatal("cannot load regions configuration: ", err)
 	}
 
 	var regions []core.Region
 	err = json.Unmarshal(data, &regions)
 	if err != nil {
-		log.Fatal("cannot load regions configuration: %s", err)
+		log.Fatal("cannot load regions configuration: ", err)
 	}
 
 	log.Trace("Regions from configuration: %#v", regions)
 
 	for i, _ := range regions {
-		if regions[i].Services.Server.Auth == nil {
-			regions[i].Services.Driver = backoffice.NewKubernetes(nil, nil, nil)
-		}
-
-		regions[i].Services.Driver = backoffice.NewKubernetes(
-			&regions[i].Services.Server.Auth.Username,
-			&regions[i].Services.Server.Auth.Password,
-			&regions[i].Services.Server.Auth.Token,
+		regions[i].Services.Driver, err = backoffice.NewKubernetes(
+			regions[i].Services.Server.ConfigFile,
 		)
+
+		if err != nil {
+			log.Panic("Cannot create Kubernetes connection: ", err)
+		}
 	}
 
 	return regions
