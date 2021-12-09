@@ -12,6 +12,10 @@ func NewEngine(r []Region, c []Catalog) Engine {
 	}
 }
 
+func (e Engine) GetCatalogs() []Catalog{
+	return e.catalogs
+}
+
 func (e Engine) GetRegions() []Region {
 	r := e.regions
 

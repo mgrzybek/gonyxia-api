@@ -29,6 +29,16 @@ func GetCatalogById(w http.ResponseWriter, r *http.Request) {
 
 func GetCatalogs(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+
+	result, err := json.Marshal(engine.GetRegions())
+
+	if err != nil {
+		log.Error(err)
+		w.WriteHeader(http.StatusInternalServerError)
+	}
+
+	fmt.Fprintf(w, "%s", result)
+
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
