@@ -30,7 +30,7 @@ func GetCatalogById(w http.ResponseWriter, r *http.Request) {
 func GetCatalogs(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 
-	result, err := json.Marshal(engine.GetRegions())
+	result, err := json.Marshal(engine.GetCatalogs())
 
 	if err != nil {
 		log.Error(err)
