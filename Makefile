@@ -26,7 +26,7 @@ get: ## Download required modules
 	go get ./...
 
 onyxia-api: test ## Test and build the program
-	go build -o onyxya-api main.go
+	go build -o onyxia-api main.go
 
 ##############################################################################
 # Vagrant
