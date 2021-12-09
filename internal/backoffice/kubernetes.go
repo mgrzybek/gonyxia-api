@@ -6,6 +6,7 @@ package backoffice
 import (
 	"context"
 	"fmt"
+	"os"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
@@ -74,11 +75,17 @@ func newOutClusterConfigKubernetes(configFilePath *string) (*rest.Config, error)
  */
 
 func (k Kubernetes) Health() error {
-	_, err := k.clientset.CoreV1().Pods("").List(context.TODO(), metav1.ListOptions{})
+	_, err := k.clientset.CoreV1().Pods(
+		os.Getenv("KUBERNETES_NAMESPACE"),
+	).List(
+		context.TODO(),
+		metav1.ListOptions{},
+	)
 	if err != nil {
 		log.Error(err.Error())
 		return err
 	}
+	log.Info("Kubernetes endpoint is healthy")
 	return nil
 }
 
