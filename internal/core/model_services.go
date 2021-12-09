@@ -39,10 +39,3 @@ type Services struct {
 
 	DefaultConfiguration *DefaultConfiguration `json:"defaultConfiguration,omitempty"`
 }
-
-// if Services.server is nil then in-cluster mode
-/*
-func (c *Services) Ping() error {
-
-}
-*/
