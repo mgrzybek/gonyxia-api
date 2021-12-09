@@ -142,10 +142,13 @@ func serverRun(cmd *cobra.Command) error {
 	//orchestrator := backoffice.Kubernetes{}
 
 	// Create the core service
-	engine := core.NewEngine(
+	engine, err := core.NewEngine(
 		regions,
 		catalogs,
 	)
+	if err != nil {
+		log.Panic(err)
+	}
 
 	// Create the HTTP REST input adaptor
 	service := inputs.NewRestService(
