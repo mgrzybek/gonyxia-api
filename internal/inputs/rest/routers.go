@@ -103,7 +103,7 @@ func validateAuthorizationHeader(w http.ResponseWriter, r *http.Request) bool {
 func writeJsonResponse(resp map[string]string) ([]byte, error) {
 	j, err := json.Marshal(resp)
 	if err != nil {
-		log.Error("Error happened in JSON marshal. Err: %s", err)
+		log.Error("Error happened in JSON marshal. Err:", err)
 	}
 	return j, err
 }

@@ -14,11 +14,11 @@ type RestService struct {
 	engine       *core.Engine
 }
 
-func NewRestService(b,p string, e *core.Engine) RestService {
+func NewRestService(b, p string, e *core.Engine) RestService {
 	return RestService{
-		bind_addr: b,
+		bind_addr:    b,
 		publish_addr: p,
-		engine: e,
+		engine:       e,
 	}
 }
 
