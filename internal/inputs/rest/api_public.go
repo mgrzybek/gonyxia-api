@@ -14,6 +14,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/gorilla/mux"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -25,7 +26,7 @@ func Configuration(w http.ResponseWriter, r *http.Request) {
 func GetCatalogById(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 
-	id := r.Context().Value(ctxKey{}).([]string)[0]
+	id := mux.Vars(r)["catalogId"]
 	result, err := json.Marshal(engine.GetCatalogById(id))
 	if err != nil {
 		log.Error(err)
@@ -33,7 +34,7 @@ func GetCatalogById(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if len(result) > 0 {
+	if string(result) != "null" {
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprintf(w, "%s", result)
 		return
@@ -49,6 +50,7 @@ func GetCatalogs(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Error(err)
 		w.WriteHeader(http.StatusInternalServerError)
+		return
 	}
 
 	fmt.Fprintf(w, "%s", result)
