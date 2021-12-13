@@ -1,7 +1,8 @@
 package core
 
+// Catalog refers to an Helm catalog
 type Catalog struct {
-	Id string `json:"id,omitempty"`
+	ID string `json:"id,omitempty"`
 
 	Name string `json:"name,omitempty"`
 
@@ -17,5 +18,5 @@ type Catalog struct {
 
 	Scm string `json:"scm,omitempty"`
 
-	Type_ string `json:"type,omitempty"`
+	Type string `json:"type,omitempty"`
 }

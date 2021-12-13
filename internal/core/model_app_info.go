@@ -1,7 +1,7 @@
 package core
 
-type AppInfo struct {
-	Build *BuildInfo `json:"build,omitempty"`
+type appInfo struct {
+	Build *buildInfo `json:"build,omitempty"`
 
 	Regions []Region `json:"regions,omitempty"`
 }

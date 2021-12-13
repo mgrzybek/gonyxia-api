@@ -1,7 +1,7 @@
 package core
 
-type ServicesListing struct {
-	Apps []Service `json:"apps,omitempty"`
+type servicesListing struct {
+	Apps []service `json:"apps,omitempty"`
 
-	Groups []Group `json:"groups,omitempty"`
+	Groups []group `json:"groups,omitempty"`
 }

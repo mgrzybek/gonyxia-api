@@ -19,6 +19,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// Kubernetes implements the OrchestratorAdaptor interface
 type Kubernetes struct {
 	clientset *kubernetes.Clientset
 }
@@ -27,6 +28,7 @@ type Kubernetes struct {
  * Constructors
  */
 
+// NewKubernetes implements the Kubernetes constructor
 func NewKubernetes(configFilePath *string) (Kubernetes, error) {
 	var config *rest.Config
 	var err error
@@ -74,6 +76,7 @@ func newOutClusterConfigKubernetes(configFilePath *string) (*rest.Config, error)
  * Interface’s implementations
  */
 
+// Health lists the running PODs in order to test the orchestrator
 func (k Kubernetes) Health() error {
 	_, err := k.clientset.CoreV1().Pods(
 		os.Getenv("KUBERNETES_NAMESPACE"),
@@ -89,25 +92,32 @@ func (k Kubernetes) Health() error {
 	return nil
 }
 
+// UserCreate returns TODO
 func (k Kubernetes) UserCreate() error {
 	return fmt.Errorf("Not implemented")
 }
+
+// UserDelete returns TODO
 func (k Kubernetes) UserDelete() error {
 	return fmt.Errorf("Not implemented")
 }
 
+// NamespaceCreate creates a namespace
 func (k Kubernetes) NamespaceCreate(name string, quota core.Quota, owner string) error {
 	return fmt.Errorf("Not implemented")
 }
 
+// NamespaceDelete deletes the given namespace
 func (k Kubernetes) NamespaceDelete(name string) error {
 	return fmt.Errorf("Not implemented")
 }
 
+// RoleCreate creates a role in the RBAC system
 func (k Kubernetes) RoleCreate() error {
 	return fmt.Errorf("Not implemented")
 }
 
+// RoleDelete removes a role in the RBAC system
 func (k Kubernetes) RoleDelete() error {
 	return fmt.Errorf("Not implemented")
 }

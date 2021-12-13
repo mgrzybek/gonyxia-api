@@ -1,5 +1,5 @@
 package core
 
-type Server struct {
+type server struct {
 	ConfigFile *string `json:"configFilePath"`
 }

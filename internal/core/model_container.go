@@ -1,6 +1,6 @@
 package core
 
-type Container struct {
+type container struct {
 	Name string `json:"name,omitempty"`
 
 	Ready bool `json:"ready,omitempty"`

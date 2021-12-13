@@ -1,5 +1,5 @@
 package core
 
-type Ip struct {
-	Ip string `json:"ip,omitempty"`
+type ip struct {
+	IP string `json:"ip,omitempty"`
 }

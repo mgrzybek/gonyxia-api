@@ -1,7 +1,7 @@
 package core
 
-type CloudshellConfiguration struct {
-	CatalogId string `json:"catalogId,omitempty"`
+type cloudshellConfiguration struct {
+	CatalogID string `json:"catalogId,omitempty"`
 
 	PackageName string `json:"packageName,omitempty"`
 }

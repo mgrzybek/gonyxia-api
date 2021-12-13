@@ -31,10 +31,10 @@ func init() {
 	serverCmd.PersistentFlags().StringP("catalogs-json", "c", "", "Catalog JSON file")
 }
 
-func verifyHttpServerOptions(bind_addr, publish_addr string) {
-	log.Debug("bind_addr: " + bind_addr)
-	if len(bind_addr) == 0 {
-		log.Fatal("The given bind_addr is invalid")
+func verifyHTTPServerOptions(bindAddr, publishAddr string) {
+	log.Debug("bindAddr: " + bindAddr)
+	if len(bindAddr) == 0 {
+		log.Fatal("The given bindAddr is invalid")
 	}
 }
 
@@ -97,7 +97,7 @@ func loadRegionsFile(f string) []core.Region {
 
 	log.Trace("Regions from configuration: ", regions)
 
-	for i, _ := range regions {
+	for i := range regions {
 		regions[i].Services.Driver, err = backoffice.NewKubernetes(
 			regions[i].Services.Server.ConfigFile,
 		)
@@ -114,28 +114,28 @@ func serverRun(cmd *cobra.Command) error {
 	/*
 	 * Ops options: binding
 	 */
-	bind_addr, _ := cmd.Flags().GetString("bind-addr")
-	publish_addr, _ := cmd.Flags().GetString("publish-addr")
-	verifyHttpServerOptions(bind_addr, publish_addr)
+	bindAddr, _ := cmd.Flags().GetString("bind-addr")
+	publishAddr, _ := cmd.Flags().GetString("publish-addr")
+	verifyHTTPServerOptions(bindAddr, publishAddr)
 
 	/*
 	 * Ops options: logs
 	 */
-	log_level, _ := cmd.Flags().GetString("log-level")
-	log_format, _ := cmd.Flags().GetString("log-format")
-	configureLogger(log_level, log_format)
+	logLevel, _ := cmd.Flags().GetString("log-level")
+	logFormat, _ := cmd.Flags().GetString("log-format")
+	configureLogger(logLevel, logFormat)
 
 	/*
 	 * Business options: regions
 	 */
-	regions_json, _ := cmd.Flags().GetString("regions-json")
-	regions := loadRegionsFile(regions_json)
+	regionsJSON, _ := cmd.Flags().GetString("regions-json")
+	regions := loadRegionsFile(regionsJSON)
 
 	/*
 	 * Business options: catalogs
 	 */
-	catalogs_json, _ := cmd.Flags().GetString("catalogs-json")
-	catalogs := loadCatalogsFile(catalogs_json)
+	catalogsJSON, _ := cmd.Flags().GetString("catalogs-json")
+	catalogs := loadCatalogsFile(catalogsJSON)
 
 	// TODO: Create the Orchestrator adapter
 	// TODO: Get k8s credentials
@@ -152,8 +152,8 @@ func serverRun(cmd *cobra.Command) error {
 
 	// Create the HTTP REST input adaptor
 	service := inputs.NewRestService(
-		bind_addr,
-		publish_addr,
+		bindAddr,
+		publishAddr,
 		&engine,
 	)
 	service.Run()

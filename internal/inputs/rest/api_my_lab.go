@@ -4,7 +4,7 @@ import (
 	"net/http"
 )
 
-func ApplyQuota(w http.ResponseWriter, r *http.Request) {
+func applyQuota(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	if !validateAuthorizationHeader(w, r) {
 		return
@@ -12,7 +12,7 @@ func ApplyQuota(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
-func DestroyApp(w http.ResponseWriter, r *http.Request) {
+func destroyApp(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	if !validateAuthorizationHeader(w, r) {
 		return
@@ -20,7 +20,7 @@ func DestroyApp(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
-func GetApp(w http.ResponseWriter, r *http.Request) {
+func getApp(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	if !validateAuthorizationHeader(w, r) {
 		return
@@ -28,7 +28,7 @@ func GetApp(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
-func GetLogs(w http.ResponseWriter, r *http.Request) {
+func getLogs(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	if !validateAuthorizationHeader(w, r) {
 		return
@@ -36,7 +36,7 @@ func GetLogs(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
-func GetMyServices(w http.ResponseWriter, r *http.Request) {
+func getMyServices(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	if !validateAuthorizationHeader(w, r) {
 		return
@@ -44,7 +44,7 @@ func GetMyServices(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
-func GetQuota(w http.ResponseWriter, r *http.Request) {
+func getQuota(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	if !validateAuthorizationHeader(w, r) {
 		return
@@ -52,7 +52,7 @@ func GetQuota(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
-func PublishService(w http.ResponseWriter, r *http.Request) {
+func publishService(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	if !validateAuthorizationHeader(w, r) {
 		return
@@ -60,7 +60,7 @@ func PublishService(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
-func ResetQuota(w http.ResponseWriter, r *http.Request) {
+func resetQuota(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	if !validateAuthorizationHeader(w, r) {
 		return
@@ -68,7 +68,7 @@ func ResetQuota(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
-func ResetQuota1(w http.ResponseWriter, r *http.Request) {
+func resetQuota1(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	if !validateAuthorizationHeader(w, r) {
 		return
@@ -76,7 +76,7 @@ func ResetQuota1(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
-func ResetQuota2(w http.ResponseWriter, r *http.Request) {
+func resetQuota2(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	if !validateAuthorizationHeader(w, r) {
 		return
@@ -84,7 +84,7 @@ func ResetQuota2(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
-func ResetQuota3(w http.ResponseWriter, r *http.Request) {
+func resetQuota3(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	if !validateAuthorizationHeader(w, r) {
 		return
@@ -92,7 +92,7 @@ func ResetQuota3(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
-func ResetQuota4(w http.ResponseWriter, r *http.Request) {
+func resetQuota4(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	if !validateAuthorizationHeader(w, r) {
 		return
@@ -100,7 +100,7 @@ func ResetQuota4(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
-func ResetQuota5(w http.ResponseWriter, r *http.Request) {
+func resetQuota5(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	if !validateAuthorizationHeader(w, r) {
 		return
@@ -108,7 +108,7 @@ func ResetQuota5(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
-func ResetQuota6(w http.ResponseWriter, r *http.Request) {
+func resetQuota6(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	if !validateAuthorizationHeader(w, r) {
 		return

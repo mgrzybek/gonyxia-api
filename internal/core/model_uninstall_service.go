@@ -1,6 +1,6 @@
 package core
 
-type UninstallService struct {
+type uninstallService struct {
 	Path string `json:"path,omitempty"`
 
 	Success bool `json:"success,omitempty"`

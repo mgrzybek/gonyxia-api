@@ -1,6 +1,6 @@
 package core
 
-type Location struct {
+type location struct {
 	Lat float64 `json:"lat,omitempty"`
 
 	Name string `json:"name,omitempty"`

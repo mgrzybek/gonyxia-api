@@ -8,22 +8,25 @@ import (
 	"github.com/mgrzybek/gonyxia-api/internal/inputs/rest"
 )
 
+// RestService refers to the webservice object
 type RestService struct {
-	bind_addr    string
-	publish_addr string
-	engine       *core.Engine
+	bindAddr    string
+	publishAddr string
+	engine      *core.Engine
 }
 
+// NewRestService is the RestService’s constructor
 func NewRestService(b, p string, e *core.Engine) RestService {
 	return RestService{
-		bind_addr:    b,
-		publish_addr: p,
-		engine:       e,
+		bindAddr:    b,
+		publishAddr: p,
+		engine:      e,
 	}
 }
 
+// Run starts the REST service on the given socket
 func (r *RestService) Run() {
-	log.Info("Server started on " + r.bind_addr)
+	log.Info("Server started on " + r.bindAddr)
 	router := rest.NewRouter(r.engine)
-	log.Fatal(http.ListenAndServe(r.bind_addr, router))
+	log.Fatal(http.ListenAndServe(r.bindAddr, router))
 }

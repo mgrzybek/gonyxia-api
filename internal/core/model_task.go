@@ -1,9 +1,9 @@
 package core
 
-type Task struct {
-	Id string `json:"id,omitempty"`
+type task struct {
+	ID string `json:"id,omitempty"`
 
-	Status *TaskStatus `json:"status,omitempty"`
+	Status *taskStatus `json:"status,omitempty"`
 
-	Containers []Container `json:"containers,omitempty"`
+	Containers []container `json:"containers,omitempty"`
 }

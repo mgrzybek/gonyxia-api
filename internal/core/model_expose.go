@@ -1,5 +1,5 @@
 package core
 
-type Expose struct {
+type expose struct {
 	Domain string `json:"domain,omitempty"`
 }

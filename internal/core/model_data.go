@@ -1,5 +1,5 @@
 package core
 
-type Data struct {
-	S3 *S3 `json:"S3,omitempty"`
+type data struct {
+	S3 *s3 `json:"S3,omitempty"`
 }

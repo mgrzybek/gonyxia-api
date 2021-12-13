@@ -1,5 +1,5 @@
 package core
 
-type OnboardingRequest struct {
+type onboardingRequest struct {
 	Group string `json:"group,omitempty"`
 }

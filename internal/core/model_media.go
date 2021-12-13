@@ -1,5 +1,5 @@
 package core
 
-type Media struct {
-	Type_ string `json:"type,omitempty"`
+type media struct {
+	Type string `json:"type,omitempty"`
 }

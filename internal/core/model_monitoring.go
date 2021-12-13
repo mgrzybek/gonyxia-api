@@ -1,5 +1,5 @@
 package core
 
-type Monitoring struct {
+type monitoring struct {
 	URLPattern string `json:"URLPattern,omitempty"`
 }

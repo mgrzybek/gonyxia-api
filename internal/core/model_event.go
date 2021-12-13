@@ -1,6 +1,6 @@
 package core
 
-type Event struct {
+type event struct {
 	Message string `json:"message,omitempty"`
 
 	Timestamp int64 `json:"timestamp,omitempty"`

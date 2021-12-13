@@ -1,11 +1,11 @@
 package core
 
-type CloudShellStatus struct {
+type cloudShellStatus struct {
 	Status string `json:"status,omitempty"`
 
-	Url string `json:"url,omitempty"`
+	URL string `json:"url,omitempty"`
 
-	PackageToDeploy *Pkg `json:"packageToDeploy,omitempty"`
+	PackageToDeploy *pkg `json:"packageToDeploy,omitempty"`
 
-	CatalogId string `json:"catalogId,omitempty"`
+	CatalogID string `json:"catalogId,omitempty"`
 }

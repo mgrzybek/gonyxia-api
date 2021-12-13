@@ -1,11 +1,13 @@
 package core
 
+// Services represents an orchestrator endpoint (driver,
+// default configurations…).
 type Services struct {
-	Server *Server `json:"server"`
+	Server *server `json:"server"`
 
 	Driver OrchestratorAdapter
 
-	Type_ string `json:"type,omitempty"`
+	Type string `json:"type,omitempty"`
 
 	SingleNamespace bool `json:"singleNamespace,omitempty"`
 
@@ -19,15 +21,15 @@ type Services struct {
 
 	AuthenticationMode string `json:"authenticationMode,omitempty"`
 
-	Expose *Expose `json:"expose,omitempty"`
+	Expose *expose `json:"expose,omitempty"`
 
-	Monitoring *Monitoring `json:"monitoring,omitempty"`
+	Monitoring *monitoring `json:"monitoring,omitempty"`
 
-	Cloudshell *CloudshellConfiguration `json:"cloudshell,omitempty"`
+	Cloudshell *cloudshellConfiguration `json:"cloudshell,omitempty"`
 
 	InitScript string `json:"initScript,omitempty"`
 
-	Quotas *Quotas `json:"quotas,omitempty"`
+	Quotas *quotas `json:"quotas,omitempty"`
 
-	DefaultConfiguration *DefaultConfiguration `json:"defaultConfiguration,omitempty"`
+	DefaultConfiguration *defaultConfiguration `json:"defaultConfiguration,omitempty"`
 }

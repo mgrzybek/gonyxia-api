@@ -1,9 +1,9 @@
 package core
 
-type Quotas struct {
+type quotas struct {
 	Enabled bool `json:"enabled,omitempty"`
 
 	AllowUserModification bool `json:"allowUserModification,omitempty"`
 
-	Default_ *Quota `json:"default,omitempty"`
+	Default *Quota `json:"default,omitempty"`
 }

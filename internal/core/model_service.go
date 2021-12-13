@@ -1,7 +1,7 @@
 package core
 
-type Service struct {
-	Id string `json:"id,omitempty"`
+type service struct {
+	ID string `json:"id,omitempty"`
 
 	Name string `json:"name,omitempty"`
 
@@ -23,13 +23,13 @@ type Service struct {
 
 	Env map[string]string `json:"env,omitempty"`
 
-	Tasks []Task `json:"tasks,omitempty"`
+	Tasks []task `json:"tasks,omitempty"`
 
-	Events []Event `json:"events,omitempty"`
+	Events []event `json:"events,omitempty"`
 
 	Subtitle string `json:"subtitle,omitempty"`
 
-	Monitoring *Monitoring `json:"monitoring,omitempty"`
+	Monitoring *monitoring `json:"monitoring,omitempty"`
 
 	PostInstallInstructions string `json:"postInstallInstructions,omitempty"`
 

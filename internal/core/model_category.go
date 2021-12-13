@@ -1,11 +1,11 @@
 package core
 
-type Category struct {
-	Properties map[string]Property `json:"properties,omitempty"`
+type category struct {
+	Properties map[string]property `json:"properties,omitempty"`
 
 	Description string `json:"description,omitempty"`
 
-	Type_ string `json:"type,omitempty"`
+	Type string `json:"type,omitempty"`
 
 	Required []string `json:"required,omitempty"`
 }

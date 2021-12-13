@@ -1,6 +1,6 @@
 package core
 
-type BuildInfo struct {
+type buildInfo struct {
 	Version string `json:"version,omitempty"`
 
 	Timestamp int64 `json:"timestamp,omitempty"`

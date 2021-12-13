@@ -1,6 +1,6 @@
 package core
 
-type OnyxiaUser struct {
+type onyxiaUser struct {
 	Email string `json:"email,omitempty"`
 
 	Idep string `json:"idep,omitempty"`
@@ -9,9 +9,9 @@ type OnyxiaUser struct {
 
 	Password string `json:"password,omitempty"`
 
-	Ip string `json:"ip,omitempty"`
+	IP string `json:"ip,omitempty"`
 
 	Groups []string `json:"groups,omitempty"`
 
-	Projects []Project `json:"projects,omitempty"`
+	Projects []project `json:"projects,omitempty"`
 }

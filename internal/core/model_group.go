@@ -1,7 +1,7 @@
 package core
 
-type Group struct {
-	Id string `json:"id,omitempty"`
+type group struct {
+	ID string `json:"id,omitempty"`
 
-	Apps []Service `json:"apps,omitempty"`
+	Apps []service `json:"apps,omitempty"`
 }

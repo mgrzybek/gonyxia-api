@@ -5,11 +5,13 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// Engine is the main core object of the program.
 type Engine struct {
 	regions  []Region
 	catalogs []Catalog
 }
 
+// NewEngine is the Engine’s constructor
 func NewEngine(r []Region, c []Catalog) (Engine, error) {
 	var err error
 
@@ -26,14 +28,17 @@ func NewEngine(r []Region, c []Catalog) (Engine, error) {
 	}, err
 }
 
+// GetCatalogs returns an array of configured catalogs
 func (e Engine) GetCatalogs() []Catalog {
 	return e.catalogs
 }
 
-func (e Engine) GetCatalogById(id string) *Catalog {
+// GetCatalogByID returns the Catalog matching the given id.
+// If no match is found, nil is returned.
+func (e Engine) GetCatalogByID(id string) *Catalog {
 	log.Trace("looking for catalog id ", id)
-	for i, _ := range e.catalogs {
-		if e.catalogs[i].Id == id {
+	for i := range e.catalogs {
+		if e.catalogs[i].ID == id {
 			return &e.catalogs[i]
 		}
 	}
@@ -41,10 +46,11 @@ func (e Engine) GetCatalogById(id string) *Catalog {
 	return nil
 }
 
+// GetRegions returns an array of the configured regions
 func (e Engine) GetRegions() []Region {
 	r := e.regions
 
-	for i, _ := range r {
+	for i := range r {
 		r[i].Services.Driver = nil
 	}
 

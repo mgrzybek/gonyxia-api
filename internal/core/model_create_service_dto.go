@@ -1,7 +1,7 @@
 package core
 
-type CreateServiceDto struct {
-	CatalogId string `json:"catalogId,omitempty"`
+type createServiceDto struct {
+	CatalogID string `json:"catalogId,omitempty"`
 
 	PackageName string `json:"packageName,omitempty"`
 

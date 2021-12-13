@@ -1,9 +1,9 @@
 package core
 
-type Config struct {
-	Type_ string `json:"type,omitempty"`
+type config struct {
+	Type string `json:"type,omitempty"`
 
-	Properties *Category `json:"properties,omitempty"`
+	Properties *category `json:"properties,omitempty"`
 
 	Required []string `json:"required,omitempty"`
 }

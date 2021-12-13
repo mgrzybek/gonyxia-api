@@ -1,6 +1,6 @@
 package core
 
-type XForm struct {
+type xForm struct {
 	Hidden bool `json:"hidden,omitempty"`
 
 	Readonly bool `json:"readonly,omitempty"`

@@ -1,7 +1,7 @@
 package core
 
-type XGenerated struct {
-	Type_ string `json:"type,omitempty"`
+type xGenerated struct {
+	Type string `json:"type,omitempty"`
 
 	Scope string `json:"scope,omitempty"`
 

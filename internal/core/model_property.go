@@ -1,7 +1,7 @@
 package core
 
-type Property struct {
-	Type_ string `json:"type,omitempty"`
+type property struct {
+	Type string `json:"type,omitempty"`
 
 	Description string `json:"description,omitempty"`
 
@@ -9,7 +9,7 @@ type Property struct {
 
 	Pattern string `json:"pattern,omitempty"`
 
-	Media *Media `json:"media,omitempty"`
+	Media *media `json:"media,omitempty"`
 
 	Minimum string `json:"minimum,omitempty"`
 
@@ -27,15 +27,15 @@ type Property struct {
 
 	SliderExtremitySemantic string `json:"sliderExtremitySemantic,omitempty"`
 
-	SliderRangeId string `json:"sliderRangeId,omitempty"`
+	SliderRangeID string `json:"sliderRangeId,omitempty"`
 
-	Hidden *Hidden `json:"hidden,omitempty"`
+	Hidden *hidden `json:"hidden,omitempty"`
 
 	Default *interface{} `json:"default,omitempty"`
 
 	Enum *interface{} `json:"enum,omitempty"`
 
-	XForm *XForm `json:"x-form,omitempty"`
+	XForm *xForm `json:"x-form,omitempty"`
 
-	XGenerated *XGenerated `json:"x-generated,omitempty"`
+	XGenerated *xGenerated `json:"x-generated,omitempty"`
 }

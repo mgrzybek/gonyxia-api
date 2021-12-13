@@ -1,11 +1,11 @@
 package core
 
-type Pkg struct {
+type pkg struct {
 	Name string `json:"name,omitempty"`
 
 	Description string `json:"description,omitempty"`
 
 	Version string `json:"version,omitempty"`
 
-	Config *Config `json:"config,omitempty"`
+	Config *config `json:"config,omitempty"`
 }

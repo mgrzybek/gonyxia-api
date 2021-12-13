@@ -1,6 +1,6 @@
 package core
 
-type Hidden struct {
+type hidden struct {
 	Value *interface{} `json:"value,omitempty"`
 
 	Path string `json:"path,omitempty"`
