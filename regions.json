@@ -1,0 +1,66 @@
+[
+  {
+    "id": "kub",
+    "name": "Kubernetes (in-cluster)",
+    "description": "The in-cluster Kubernetes region.",
+    "services": {
+      "server": {
+        "URL": "http://localhost:8443",
+        "auth": {
+          "username": "robert",
+          "password": "changeme",
+          "token": "09e6a233a7a814ef690a523ed036ffd3"
+        }
+      },
+      "type": "KUBERNETES",
+      "initScript": "https://git.lab.sspcloud.fr/innovation/plateforme-onyxia/services-ressources/-/raw/master/onyxia-init.sh",
+      "singleNamespace": true,
+      "namespacePrefix": "user-",
+      "usernamePrefix": "oidc-",
+      "groupNamespacePrefix": "projet-",
+      "authenticationMode" : "admin",
+      "quotas": {
+        "enabled": false,
+        "allowUserModification": true,
+        "default": {
+          "requests.memory": "10Gi",
+          "requests.cpu": "10",
+          "limits.memory": "10Gi",
+          "limits.cpu": "10",
+          "requests.storage": "100Gi",
+          "count/pods": 50
+        }
+      },
+      "defaultConfiguration": {
+        "IPProtection": true,
+        "networkPolicy": true
+      },
+      "expose": {
+        "domain": "fakedomain.kub.example.com"
+      },
+      "monitoring": {
+        "URLPattern": "https://graphana.kub.example.com/$appIdSlug"
+      },
+      "cloudshell": {
+        "catalogId": "inseefrlab-helm-charts-datascience",
+        "packageName": "cloudshell"
+      }
+    },
+    "data": {
+      "S3": {
+        "URL": "https://minio.example.com",
+        "monitoring": {
+          "URLPattern": "https://graphana.minio.example.com/$bucketId"
+        }
+      }
+    },
+    "auth": {
+      "type": "openidconnect"
+    },
+    "location": {
+      "name": "Paris",
+      "lat": 48.8453225,
+      "long": 2.3024401
+    }
+  }
+]

@@ -1,5 +1,7 @@
 package core
 
+// OrchestratorAdapter is the interface that represents an orchestrator used
+// to host users’ workloads.
 type OrchestratorAdapter interface {
 	Health() error
 
