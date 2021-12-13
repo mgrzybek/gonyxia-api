@@ -13,7 +13,7 @@ components:
   - id: golang/go/latest
     preferences:
       go.lintFlags: '--fast'
-      go.useLanguageServer: true
+      go.useLanguageServer: 'true'
       go.lintTool: golangci-lint
     type: chePlugin
     alias: go-plugin
