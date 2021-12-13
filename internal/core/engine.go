@@ -1,6 +1,9 @@
 package core
 
-import "fmt"
+import (
+	"fmt"
+	log "github.com/sirupsen/logrus"
+)
 
 type Engine struct {
 	regions  []Region
@@ -28,11 +31,13 @@ func (e Engine) GetCatalogs() []Catalog {
 }
 
 func (e Engine) GetCatalogById(id string) *Catalog {
+	log.Trace("looking for catalog id ", id)
 	for i, _ := range e.catalogs {
 		if e.catalogs[i].Id == id {
 			return &e.catalogs[i]
 		}
 	}
+	log.Trace("catalog id ", id, " not found")
 	return nil
 }
 
