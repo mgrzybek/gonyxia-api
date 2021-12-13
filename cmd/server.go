@@ -67,7 +67,7 @@ func configureLogger(level, format string) {
 
 func loadCatalogsFile(f string) []core.Catalog {
 	data, err := ioutil.ReadFile(f)
-	log.Trace("Catalog JSON data: %s", string(data))
+	log.Trace("Catalog JSON data: ", string(data))
 	if err != nil {
 		log.Fatal("cannot load catalogs configuration: ", err)
 	}
@@ -78,13 +78,13 @@ func loadCatalogsFile(f string) []core.Catalog {
 		log.Fatal("cannot load catalogs configuration: ", err)
 	}
 
-	log.Trace("Catalogs from configuration: %#v", catalogs)
+	log.Trace("Catalogs from configuration: ", catalogs)
 	return catalogs
 }
 
 func loadRegionsFile(f string) []core.Region {
 	data, err := ioutil.ReadFile(f)
-	log.Trace("Region JSON data: %s", string(data))
+	log.Trace("Region JSON data: ", string(data))
 	if err != nil {
 		log.Fatal("cannot load regions configuration: ", err)
 	}
@@ -95,7 +95,7 @@ func loadRegionsFile(f string) []core.Region {
 		log.Fatal("cannot load regions configuration: ", err)
 	}
 
-	log.Trace("Regions from configuration: %#v", regions)
+	log.Trace("Regions from configuration: ", regions)
 
 	for i, _ := range regions {
 		regions[i].Services.Driver, err = backoffice.NewKubernetes(
