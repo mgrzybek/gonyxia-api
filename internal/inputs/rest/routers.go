@@ -115,7 +115,7 @@ var restRoutes = routes{
 		promhttp.Handler().ServeHTTP,
 	},
 
-	Route{
+	route{
 		"Index",
 		"GET",
 		"/",

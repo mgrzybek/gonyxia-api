@@ -1,5 +1,5 @@
 # Binaries for programs and plugins
-gonyxia-api
+onyxia-api
 *.exe
 *.exe~
 *.dll
