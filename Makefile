@@ -1,7 +1,7 @@
 .PHONY: help
 help: ## This help message
 	@awk -F: \
-		'/^([a-z-]+): \w*\s*## (.+)$$/ {gsub("[a-z ]*## ","") ; print $$1"\t"$$2}' \
+		'/^([a-z-]+): [a-z- ]*## (.+)$$/ {gsub(/: .*?\s*##/, "\t");print}' \
 		Makefile \
 	| expand -t20 \
 	| sort
@@ -47,6 +47,10 @@ vagrant-vbox: vagrant-variables ## Test the api using vagrant and virtualbox
 
 ##############################################################################
 # All
+
+.PHONY: clean
+clean: ## Delete produced artifacts
+	rm -f onyxia-api
 
 .PHONY: all
 all: get onyxia-api ## Test and build
