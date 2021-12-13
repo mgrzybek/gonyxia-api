@@ -27,6 +27,9 @@ func Execute() {
 }
 
 func init() {
+	viper.SetDefault("LOG_LEVEL","info")
+	viper.SetDefault("LOG_FORMAT", "")
+	viper.SetDefault("BIND_ADDR","0.0.0.0:8080")
 	cobra.OnInitialize(initConfig)
 
 	rootCmd.PersistentFlags().StringP("log-level", "l", viper.GetString("LOG_LEVEL"), "Level of verbosity.")

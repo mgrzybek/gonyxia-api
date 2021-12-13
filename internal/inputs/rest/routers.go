@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 
 	log "github.com/sirupsen/logrus"
 
@@ -108,6 +109,13 @@ func index(w http.ResponseWriter, r *http.Request) {
 var engine *core.Engine
 var restRoutes = routes{
 	route{
+		"Index",
+		"GET",
+		"/metrics",
+		promhttp.Handler().ServeHTTP,
+	},
+
+	Route{
 		"Index",
 		"GET",
 		"/",
