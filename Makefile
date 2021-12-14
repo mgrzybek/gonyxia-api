@@ -1,3 +1,6 @@
+BINARY      = onyxia-api
+LAST_COMMIT = $(shell git show --oneline | awk '{print $$1}')
+
 .PHONY: help
 help: ## This help message
 	@awk -F: \
@@ -38,12 +41,23 @@ vagrant-variables: ## Test vagrant env variables
 
 .PHONY: vagrant-destroy
 vagrant-destroy: ## Destroy vagrant boxes
-	@vagrant destroy -f
+	vagrant destroy -f
 
 .PHONY: vagrant-vbox
 vagrant-vbox: vagrant-variables ## Test the api using vagrant and virtualbox
-	@vagrant up --provider=virtualbox
-	@vagrant provision
+	vagrant up --provider=virtualbox
+	vagrant provision
+
+##############################################################################
+# Containers
+
+.PHONY: oci
+oci: onyxia-api ## Create an OCI image using podman build
+	podman build --format=oci --tag=${BINARY}:${LAST_COMMIT} .
+
+.PHONY: docker
+docker: onyxia-api ## Create a docker image using docker build
+	docker build --tag=${BINARY}:${LAST_COMMIT} .
 
 ##############################################################################
 # All
