@@ -37,11 +37,23 @@ components:
       - value: /tmp/.cache
         name: GOCACHE
 commands:
-  - name: 'Run :)'
+  - name: Build
     actions:
       - workdir: '${CHE_PROJECTS_ROOT}/gonyxia-api'
         type: exec
-        command: go run .
+        command: make onyxia-api
+        component: go
+  - name: Run (trace)
+    actions:
+      - workdir: '${CHE_PROJECTS_ROOT}/gonyxia-api'
+        type: exec
+        command: ./onyxia-api -l trace server -b 127.0.0.1:8081 -r ./etc/regions.json -c ./etc/catalogs.json
+        component: go
+  - name: Run (info)
+    actions:
+      - workdir: '${CHE_PROJECTS_ROOT}/gonyxia-api'
+        type: exec
+        command: ./onyxia-api -l info server -b 127.0.0.1:8081 -r ./etc/regions.json -c ./etc/catalogs.json
         component: go
   - name: Debug current file
     actions:
