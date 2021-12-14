@@ -1,5 +1,5 @@
 BINARY      = onyxia-api
-LAST_COMMIT = $(shell git show --oneline | awk '{print $$1}')
+LAST_COMMIT = $(shell git rev-parse HEAD)
 
 .PHONY: help
 help: ## This help message
