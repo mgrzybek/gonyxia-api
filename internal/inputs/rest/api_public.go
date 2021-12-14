@@ -46,8 +46,6 @@ func getCatalogs(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Fprintf(w, "%s", result)
-
-	w.WriteHeader(http.StatusOK)
 }
 
 func getIP(w http.ResponseWriter, r *http.Request) {
@@ -83,8 +81,6 @@ func getRegions(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Fprintf(w, "%s", result)
-
-	w.WriteHeader(http.StatusOK)
 }
 
 func healthcheck(w http.ResponseWriter, r *http.Request) {
