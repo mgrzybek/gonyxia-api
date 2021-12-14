@@ -1,10 +1,10 @@
 apiVersion: 1.0.0
 metadata:
-  generateName: onyxia-api-
+  generateName: gonyxia-api-
 attributes:
   persistVolumes: 'false'
 projects:
-  - name: onyxia-api
+  - name: gonyxia-api
     source:
       location: 'https://github.com/mgrzybek/gonyxia-api.git'
       type: git
