@@ -16,8 +16,6 @@ import (
 	"github.com/mgrzybek/gonyxia-api/internal/core"
 )
 
-type ctxKey struct{}
-
 type route struct {
 	Name        string
 	Method      string
@@ -84,7 +82,7 @@ func validateAuthorizationHeader(w http.ResponseWriter, r *http.Request) bool {
 	log.Debug("Authorization header: " + r.Header.Get("Authorization"))
 	matched, err := regexp.MatchString(`^Bearer [A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$`, r.Header.Get("Authorization"))
 
-	if err == nil && matched == true {
+	if err == nil && matched {
 		log.Debug("Given token is valid")
 		return true
 	}
