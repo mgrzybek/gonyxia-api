@@ -60,6 +60,18 @@ docker: onyxia-api ## Create a docker image using docker build
 	docker build --tag=${BINARY}:${LAST_COMMIT} .
 
 ##############################################################################
+# Run (local)
+
+.PHONY: run-in-cluster
+run-in-cluster: onyxia-api ## RUn the server on 127.0.0.1:8081 using in-cluster
+	./${BINARY} \
+		-l trace \
+		server \
+			-b 127.0.0.1:8081 \
+			-r ./etc/regions.json \
+			-c etc/catalogs.json
+
+##############################################################################
 # All
 
 .PHONY: clean
