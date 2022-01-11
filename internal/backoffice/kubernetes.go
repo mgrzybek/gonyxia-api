@@ -64,7 +64,7 @@ func newInClusterConfigKubernetes() (*rest.Config, error) {
 }
 
 func newOutClusterConfigKubernetes(configFilePath *string) (*rest.Config, error) {
-	log.Trace("Create an out-cluster Kubernetes object")
+	log.Trace("Create an out-cluster Kubernetes object using file ", configFilePath)
 	config, err := clientcmd.BuildConfigFromFlags("", *configFilePath)
 	if err != nil {
 		log.Error(err.Error())
@@ -79,7 +79,7 @@ func newOutClusterConfigKubernetes(configFilePath *string) (*rest.Config, error)
 // Health lists the running PODs in order to test the orchestrator
 func (k Kubernetes) Health() error {
 	_, err := k.clientset.CoreV1().Pods(
-		os.Getenv("KUBERNETES_NAMESPACE"),
+		os.Getenv("*"),
 	).List(
 		context.TODO(),
 		metav1.ListOptions{},
