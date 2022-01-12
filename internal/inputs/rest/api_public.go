@@ -27,7 +27,6 @@ func getCatalogByID(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if string(result) != "null" {
-		w.WriteHeader(http.StatusOK)
 		fmt.Fprintf(w, "%s", result)
 		return
 	}
@@ -46,8 +45,6 @@ func getCatalogs(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Fprintf(w, "%s", result)
-
-	w.WriteHeader(http.StatusOK)
 }
 
 func getIP(w http.ResponseWriter, r *http.Request) {
@@ -83,8 +80,6 @@ func getRegions(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Fprintf(w, "%s", result)
-
-	w.WriteHeader(http.StatusOK)
 }
 
 func healthcheck(w http.ResponseWriter, r *http.Request) {
