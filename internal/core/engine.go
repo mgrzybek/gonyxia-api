@@ -56,3 +56,16 @@ func (e Engine) GetRegions() []Region {
 
 	return r
 }
+
+// Health returns an array of errors is a region is unhealthy
+func (e Engine) Health() (result []error) {
+	for i := range e.regions {
+		err := e.regions[i].Services.Driver.Health()
+
+		if err != nil {
+			result = append(result, err)
+		}
+	}
+
+	return result
+}

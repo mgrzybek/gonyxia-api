@@ -27,7 +27,6 @@ func getCatalogByID(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if string(result) != "null" {
-		w.WriteHeader(http.StatusOK)
 		fmt.Fprintf(w, "%s", result)
 		return
 	}
@@ -85,5 +84,21 @@ func getRegions(w http.ResponseWriter, r *http.Request) {
 
 func healthcheck(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	w.WriteHeader(http.StatusNotImplemented)
+
+	err := engine.Health()
+
+	if len(err) > 0 {
+		var result []string
+		for i := range err {
+			result = append(result, err[i].Error())
+		}
+
+		j, e := json.Marshal(result)
+		if e != nil {
+			log.Error("Error happened in JSON marshal. Err:", err)
+		}
+
+		fmt.Fprintf(w, "%s", j)
+		w.WriteHeader(http.StatusInternalServerError)
+	}
 }
