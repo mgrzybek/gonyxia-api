@@ -62,7 +62,7 @@ func getIP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	message["ip"] = strings.Split(ip, ":")[0]
-	writeHTTPResponse(w, http.StatusOK, message)
+	writeHTTPResponseFromMap(w, http.StatusOK, message)
 }
 
 func getPackage(w http.ResponseWriter, r *http.Request) {

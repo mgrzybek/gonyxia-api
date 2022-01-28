@@ -63,19 +63,26 @@ func logger(inner http.Handler, name string) http.Handler {
 	})
 }
 
-func writeHTTPResponse(w http.ResponseWriter, status int, message map[string]string) {
+func writeHTTPResponseFromString(w http.ResponseWriter, status int, message string) {
+	w.WriteHeader(status)
+	result := make(map[string]string)
+	result["message"] = message
+	jmsg, _ := writeJSONResponse(result)
+	fmt.Fprintf(w, "%s", jmsg)
+}
+
+func writeHTTPResponseFromMap(w http.ResponseWriter, status int, message map[string]string) {
 	w.WriteHeader(status)
 	jmsg, _ := writeJSONResponse(message)
 	fmt.Fprintf(w, "%s", jmsg)
 }
 
 func validateAuthorizationHeader(w http.ResponseWriter, r *http.Request) bool {
-	message := make(map[string]string)
-	message["message"] = "Given token is invalid."
+	message := "Given token is invalid."
 
 	if len(r.Header.Get("Authorization")) < 7 {
-		log.Warn(message["message"])
-		writeHTTPResponse(w, http.StatusUnauthorized, message)
+		log.Warn(message)
+		writeHTTPResponseFromString(w, http.StatusUnauthorized, message)
 		return false
 	}
 
@@ -87,8 +94,8 @@ func validateAuthorizationHeader(w http.ResponseWriter, r *http.Request) bool {
 		return true
 	}
 
-	log.Warn(message["message"] + " Header: " + r.Header["Authorization"][0])
-	writeHTTPResponse(w, http.StatusUnauthorized, message)
+	log.Warn(message + " Header: " + r.Header["Authorization"][0])
+	writeHTTPResponseFromString(w, http.StatusUnauthorized, message)
 	return false
 }
 
@@ -170,6 +177,13 @@ var restRoutes = routes{
 	},
 
 	route{
+		"GetQuota",
+		strings.ToUpper("Get"),
+		"/my-lab/quota/{projectID}",
+		getQuota,
+	},
+
+	route{
 		"PublishService",
 		strings.ToUpper("Put"),
 		"/my-lab/app",
@@ -178,51 +192,9 @@ var restRoutes = routes{
 
 	route{
 		"ResetQuota",
-		strings.ToUpper("Options"),
+		strings.ToUpper("POST"),
 		"/my-lab/quota/reset",
 		resetQuota,
-	},
-
-	route{
-		"ResetQuota1",
-		strings.ToUpper("Put"),
-		"/my-lab/quota/reset",
-		resetQuota1,
-	},
-
-	route{
-		"ResetQuota2",
-		strings.ToUpper("Post"),
-		"/my-lab/quota/reset",
-		resetQuota2,
-	},
-
-	route{
-		"ResetQuota3",
-		strings.ToUpper("Delete"),
-		"/my-lab/quota/reset",
-		resetQuota3,
-	},
-
-	route{
-		"ResetQuota4",
-		strings.ToUpper("Get"),
-		"/my-lab/quota/reset",
-		resetQuota4,
-	},
-
-	route{
-		"ResetQuota5",
-		strings.ToUpper("Head"),
-		"/my-lab/quota/reset",
-		resetQuota5,
-	},
-
-	route{
-		"ResetQuota6",
-		strings.ToUpper("Patch"),
-		"/my-lab/quota/reset",
-		resetQuota6,
 	},
 
 	route{
