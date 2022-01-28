@@ -63,12 +63,21 @@ docker: onyxia-api ## Create a docker image using docker build
 # Run (local)
 
 .PHONY: run-in-cluster
-run-in-cluster: onyxia-api ## RUn the server on 127.0.0.1:8081 using in-cluster
+run-in-cluster: onyxia-api ## Run the server on 127.0.0.1:8081 using in-cluster
 	./${BINARY} \
 		-l trace \
 		server \
 			-b 127.0.0.1:8081 \
-			-r ./etc/regions.json \
+			-r ./etc/regions.in-cluster.json \
+			-c etc/catalogs.json
+
+.PHONY: run-out-cluster
+run-out-cluster: onyxia-api ## Run the server on 127.0.0.1:8081 using out-cluster
+	./${BINARY} \
+		-l trace \
+		server \
+			-b 127.0.0.1:8081 \
+			-r ./etc/regions.out-cluster.json \
 			-c etc/catalogs.json
 
 ##############################################################################
