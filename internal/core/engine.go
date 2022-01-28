@@ -56,3 +56,32 @@ func (e Engine) GetRegions() []Region {
 
 	return r
 }
+
+// Health returns an array of errors is a region is unhealthy
+func (e Engine) Health() (result []error) {
+	for i := range e.regions {
+		err := e.regions[i].Services.Driver.Health()
+
+		if err != nil {
+			result = append(result, err)
+		}
+	}
+
+	return result
+}
+
+// GetQuota provides the Quota objects for each region
+func (e Engine) GetQuota(projectID string) (result []Quota, err error) {
+	for i := range e.regions {
+		r, err := e.regions[i].Services.Driver.GetQuota(projectID)
+
+		log.Debug(r)
+		if err != nil {
+			log.Error(err)
+			return result, err
+		}
+		result = append(result, r)
+	}
+
+	return result, err
+}
