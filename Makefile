@@ -4,13 +4,25 @@ LAST_COMMIT = $(shell git rev-parse HEAD)
 .PHONY: help
 help: ## This help message
 	@awk -F: \
-		'/^([a-z-]+): [a-z- ]*## (.+)$$/ {gsub(/: .*?\s*##/, "\t");print}' \
+		'/^([a-z-]+): [a-z/- ]*## (.+)$$/ {gsub(/: .*?\s*##/, "\t");print}' \
 		Makefile \
 	| expand -t20 \
 	| sort
 
 ##############################################################################
 # Tools
+
+/usr/local/go/bin/go: ## Install go environment (not included in the help message)
+	which go || ( \
+	sudo apt update \
+    && sudo apt -y install pre-commit golint \
+    && \
+	wget https://golang.org/dl/go1.17.linux-amd64.tar.gz \
+    && sudo tar -zxvf go1.17.linux-amd64.tar.gz -C /usr/local/ \
+    && rm -f go1.17.linux-amd64.tar.gz \
+    && echo "export PATH=/usr/local/go/bin:${PATH}" | sudo tee /etc/profile.d/go.sh \
+    && echo "export PATH=/usr/local/go/bin:${PATH}" | sudo tee -a ${HOME}/.profile \
+    && echo "\nPlease reload your .profile file to get an updated PATH" )
 
 .PHONY: pre-commit
 pre-commit: ## Run pre-commit compliance tests
@@ -25,7 +37,7 @@ test: ## Run go test
 	go test
 
 .PHONY: get
-get: ## Download required modules
+get: /usr/local/go/bin/go ## Download required modules
 	go get ./...
 
 onyxia-api: test ## Test and build the program
