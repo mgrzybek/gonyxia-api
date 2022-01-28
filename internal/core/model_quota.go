@@ -12,5 +12,5 @@ type Quota struct {
 
 	RequestsStorage string `json:"requests.storage,omitempty"`
 
-	CountPods int32 `json:"count/pods,omitempty"`
+	CountPods int64 `json:"count/pods,omitempty"`
 }

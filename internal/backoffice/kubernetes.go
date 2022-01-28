@@ -6,7 +6,6 @@ package backoffice
 import (
 	"context"
 	"fmt"
-	"os"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
@@ -64,7 +63,7 @@ func newInClusterConfigKubernetes() (*rest.Config, error) {
 }
 
 func newOutClusterConfigKubernetes(configFilePath *string) (*rest.Config, error) {
-	log.Trace("Create an out-cluster Kubernetes object")
+	log.Trace("Create an out-cluster Kubernetes object using file ", configFilePath)
 	config, err := clientcmd.BuildConfigFromFlags("", *configFilePath)
 	if err != nil {
 		log.Error(err.Error())
@@ -78,9 +77,7 @@ func newOutClusterConfigKubernetes(configFilePath *string) (*rest.Config, error)
 
 // Health lists the running PODs in order to test the orchestrator
 func (k Kubernetes) Health() error {
-	_, err := k.clientset.CoreV1().Pods(
-		os.Getenv("KUBERNETES_NAMESPACE"),
-	).List(
+	_, err := k.clientset.CoreV1().Pods("*").List(
 		context.TODO(),
 		metav1.ListOptions{},
 	)
@@ -120,4 +117,35 @@ func (k Kubernetes) RoleCreate() error {
 // RoleDelete removes a role in the RBAC system
 func (k Kubernetes) RoleDelete() error {
 	return fmt.Errorf("Not implemented")
+}
+
+// GetQuota provides the ResourceQuotas Spec from the API
+// https://iximiuz.com/en/posts/kubernetes-api-go-types-and-common-machinery/
+// https://pkg.go.dev/k8s.io/api/core/v1#ResourceQuotaSpec
+func (k Kubernetes) GetQuota(namespaceID string) (core.Quota, error) {
+	rq := k.clientset.CoreV1().ResourceQuotas(namespaceID)
+
+	result, err := rq.List(context.TODO(), metav1.ListOptions{})
+
+	if err != nil {
+		log.Error(err)
+	}
+
+	q := result.Items[0].Spec
+
+	reqMemory := q.Hard["requists.memory"]
+	reqCPU := q.Hard["requests.cpu"]
+	limMemory := q.Hard["limits.memory"]
+	limCPU := q.Hard["limits.cpu"]
+	reqStorage := q.Hard["requests.storage"]
+	cPods := q.Hard["count.pods"]
+
+	return core.Quota{
+		RequestsMemory:  reqMemory.String(),
+		RequestsCPU:     reqCPU.String(),
+		LimitsMemory:    limMemory.String(),
+		LimitsCPU:       limCPU.String(),
+		RequestsStorage: reqStorage.String(),
+		CountPods:       cPods.Value(),
+	}, err
 }

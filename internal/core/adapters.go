@@ -13,4 +13,6 @@ type OrchestratorAdapter interface {
 
 	RoleCreate() error
 	RoleDelete() error
+
+	GetQuota(namespaceID string) (Quota, error)
 }
