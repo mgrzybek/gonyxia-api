@@ -78,11 +78,9 @@ func writeHTTPResponseFromMap(w http.ResponseWriter, status int, message map[str
 }
 
 func validateAuthorizationHeader(w http.ResponseWriter, r *http.Request) bool {
-	message := "Given token is invalid."
-
 	if len(r.Header.Get("Authorization")) < 7 {
-		log.Warn(message)
-		writeHTTPResponseFromString(w, http.StatusUnauthorized, message)
+		log.Warn("Given header is too short: size is ", len(r.Header.Get("Authorization")), " expected greater than 7.")
+		writeHTTPResponseFromString(w, http.StatusUnauthorized, "Invalid token")
 		return false
 	}
 
@@ -90,12 +88,12 @@ func validateAuthorizationHeader(w http.ResponseWriter, r *http.Request) bool {
 	matched, err := regexp.MatchString(`^Bearer [A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$`, r.Header.Get("Authorization"))
 
 	if err == nil && matched {
-		log.Debug("Given token is valid")
+		log.Debug("Given token is valid.")
 		return true
 	}
 
-	log.Warn(message + " Header: " + r.Header["Authorization"][0])
-	writeHTTPResponseFromString(w, http.StatusUnauthorized, message)
+	log.Warn("Given token is invalid. Header: " + r.Header["Authorization"][0])
+	writeHTTPResponseFromString(w, http.StatusUnauthorized, "Given token is invalid.")
 	return false
 }
 

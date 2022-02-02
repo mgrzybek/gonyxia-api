@@ -6,6 +6,8 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+
+	log "github.com/sirupsen/logrus"
 )
 
 /*
@@ -61,10 +63,18 @@ func getQuota(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
 	// TODO: if projectID is nil, use user’s default project
+	log.Trace("Requested projectID: ", vars["projectID"])
 
 	result, err := engine.GetQuota(vars["projectID"])
 	if err != nil {
 		writeHTTPResponseFromString(w, http.StatusInternalServerError, err.Error())
+	}
+
+	log.Trace("result size is:", len(result))
+	if len(result) == 0 {
+		log.Trace("result is empty, returning HTTP 404.")
+		w.WriteHeader(http.StatusNotFound)
+		return
 	}
 
 	jResult, err := json.Marshal(result)
