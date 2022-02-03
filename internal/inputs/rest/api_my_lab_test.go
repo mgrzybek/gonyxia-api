@@ -5,6 +5,7 @@ import (
 
 	"bytes"
 	"github.com/gorilla/mux"
+	"io"
 	"net/http"
 	"net/http/httptest"
 
@@ -17,6 +18,17 @@ import (
 const (
 	validAuthHeader = "Bearer am9uaC5kb2UK.am9uaC5kb2UK.am9uaC5kb2UK"
 )
+
+var (
+	already bool
+)
+
+func init() {
+	engine = generateEngine()
+	TestRouter := mux.NewRouter().StrictSlash(true)
+	TestRouter.HandleFunc("/my-lab/quota/{projectID}", getQuota)
+	TestRouter.HandleFunc("/my-lab/quota/", getQuota)
+}
 
 func generateEngine() *core.Engine {
 	log.Info("Starting generateEngine()…")
@@ -72,42 +84,51 @@ func createRequest(t *testing.T, method, url string) *http.Request {
 	return req
 }
 
-func TestGetQuotaWithoutNamespace(t *testing.T) {
-	engine = generateEngine()
-	w := httptest.NewRecorder()
-
+func createRouter() *mux.Router {
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/my-lab/quota/{projectID}", getQuota)
-	http.Handle("/my-lab/quota/", router)
+	router.HandleFunc("/my-lab/quota/", getQuota)
 
+	if !already {
+		http.Handle("/", router)
+	}
+
+	already = true
+	return router
+}
+
+func bodyToString(body io.Reader) string {
+	buf := new(bytes.Buffer)
+	buf.ReadFrom(body)
+	return buf.String()
+}
+
+// TestGetQuotaWithoutNamespace checks that HTTP 501 is returned
+func TestGetQuotaWithoutNamespace(t *testing.T) {
+	w := httptest.NewRecorder()
 	req := createRequest(t, http.MethodGet, "/my-lab/quota/")
 
-	router.ServeHTTP(w, req)
-	if w.Result().StatusCode != 404 {
-		buf := new(bytes.Buffer)
-		buf.ReadFrom(w.Result().Body)
-		newStr := buf.String()
-
-		t.Fatalf("HTTP code should be 404, got %d ; message: %s", w.Result().StatusCode, newStr)
+	createRouter().ServeHTTP(w, req)
+	if w.Result().StatusCode != 501 {
+		t.Fatalf(
+			"HTTP code should be 501, got %d ; message: %s",
+			w.Result().StatusCode,
+			bodyToString(w.Result().Body),
+		)
 	}
 }
 
+// TestGetQuotaWithUnknownNamespace checks that HTTP 404 is returned
 func TestGetQuotaWithUnknownNamespace(t *testing.T) {
-	engine = generateEngine()
 	w := httptest.NewRecorder()
-
-	router := mux.NewRouter().StrictSlash(true)
-	router.HandleFunc("/my-lab/quota/{projectID}", getQuota)
-	//http.Handle("/my-lab/quota/", router)
-
 	req := createRequest(t, http.MethodGet, "/my-lab/quota/unknown")
 
-	router.ServeHTTP(w, req)
+	createRouter().ServeHTTP(w, req)
 	if w.Result().StatusCode != 404 {
-		buf := new(bytes.Buffer)
-		buf.ReadFrom(w.Result().Body)
-		newStr := buf.String()
-
-		t.Fatalf("HTTP code should be 404, got %d ; message: %s", w.Result().StatusCode, newStr)
+		t.Fatalf(
+			"HTTP code should be 404, got %d ; message: %s",
+			w.Result().StatusCode,
+			bodyToString(w.Result().Body),
+		)
 	}
 }
