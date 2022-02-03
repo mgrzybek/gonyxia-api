@@ -34,7 +34,7 @@ pre-commit: ## Run pre-commit compliance tests
 
 .PHONY: test
 test: ## Run go test
-	go test
+	go test ./...
 
 .PHONY: get
 get: /usr/local/go/bin/go ## Download required modules
