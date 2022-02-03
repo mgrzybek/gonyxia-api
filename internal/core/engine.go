@@ -3,6 +3,7 @@ package core
 import (
 	"fmt"
 	log "github.com/sirupsen/logrus"
+	"regexp"
 )
 
 // Engine is the main core object of the program.
@@ -60,6 +61,11 @@ func (e Engine) GetRegions() []Region {
 // Health returns an array of errors is a region is unhealthy
 func (e Engine) Health() (result []error) {
 	for i := range e.regions {
+		if e.regions[i].Services == nil {
+			err := fmt.Errorf("Driver is nil")
+			result = append(result, err)
+			break
+		}
 		err := e.regions[i].Services.Driver.Health()
 
 		if err != nil {
@@ -72,15 +78,26 @@ func (e Engine) Health() (result []error) {
 
 // GetQuota provides the Quota objects for each region
 func (e Engine) GetQuota(projectID string) (result []Quota, err error) {
+	if len(projectID) == 0 {
+		return result, fmt.Errorf("projectID is empty")
+	}
+
 	for i := range e.regions {
+		log.Trace("Looking for project ’", projectID, "’ in region ’", e.regions[i].Name, "’")
 		r, err := e.regions[i].Services.Driver.GetQuota(projectID)
 
 		log.Debug(r)
 		if err != nil {
-			log.Error(err)
-			return result, err
+			isNotFound, _ := regexp.MatchString("not found", err.Error())
+			if !isNotFound {
+				log.Error(err)
+				return result, err
+			}
+			log.Trace("project not found, skipping error…")
+			err = nil
+		} else {
+			result = append(result, r)
 		}
-		result = append(result, r)
 	}
 
 	return result, err

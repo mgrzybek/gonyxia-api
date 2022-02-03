@@ -62,10 +62,16 @@ func getQuota(w http.ResponseWriter, r *http.Request) {
 
 	vars := mux.Vars(r)
 
-	// TODO: if projectID is nil, use user’s default project
 	log.Trace("Requested projectID: ", vars["projectID"])
 
-	result, err := engine.GetQuota(vars["projectID"])
+	id, doesKeyExist := vars["projectID"]
+	if !doesKeyExist || len(id) == 0 {
+		// TODO: if projectID is nil, use user’s default project
+		writeHTTPResponseFromString(w, http.StatusNotImplemented, "empty projectID is not supported yet.")
+		return
+	}
+
+	result, err := engine.GetQuota(id)
 	if err != nil {
 		writeHTTPResponseFromString(w, http.StatusInternalServerError, err.Error())
 	}

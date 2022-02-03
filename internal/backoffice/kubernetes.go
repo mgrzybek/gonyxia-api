@@ -137,6 +137,12 @@ func (k Kubernetes) GetQuota(namespaceID string) (core.Quota, error) {
 		return core.Quota{}, err
 	}
 
+	if result.Items == nil || len(result.Items) == 0 {
+		err := fmt.Errorf("Namespace %s not found", namespaceID)
+		log.Warn(err)
+		return core.Quota{}, err
+	}
+
 	q := result.Items[0].Spec
 
 	reqStorage := q.Hard["requests.storage"]
