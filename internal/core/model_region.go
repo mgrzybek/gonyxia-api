@@ -16,3 +16,6 @@ type Region struct {
 
 	Data *data `json:"data,omitempty"`
 }
+
+// Regions designates a list of regions using their name
+type Regions map[string]Region

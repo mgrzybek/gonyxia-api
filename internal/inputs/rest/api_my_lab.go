@@ -8,6 +8,7 @@ import (
 	"github.com/gorilla/mux"
 
 	log "github.com/sirupsen/logrus"
+	"regexp"
 )
 
 /*
@@ -63,6 +64,48 @@ func getQuota(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
 	log.Trace("Requested projectID: ", vars["projectID"])
+	log.Trace("Requested regionID: ", vars["regionID"])
+
+	regionID, doesKeyExist := vars["regionID"]
+	if !doesKeyExist || len(regionID) == 0 {
+		// TODO: if regionID is nil, use user’s default project
+		writeHTTPResponseFromString(w, http.StatusNotImplemented, "empty regionID is not supported yet.")
+		return
+	}
+
+	projectID, doesKeyExist := vars["projectID"]
+	if !doesKeyExist || len(projectID) == 0 {
+		// TODO: if projectID is nil, use user’s default project
+		writeHTTPResponseFromString(w, http.StatusNotImplemented, "empty projectID is not supported yet.")
+		return
+	}
+
+	result, err := engine.GetQuota(projectID, regionID)
+	if err != nil {
+		isNotFound, _ := regexp.MatchString("not found", err.Error())
+		if isNotFound {
+			writeHTTPResponseFromString(w, http.StatusNotFound, err.Error())
+		}
+		writeHTTPResponseFromString(w, http.StatusInternalServerError, err.Error())
+	}
+
+	jResult, err := json.Marshal(result)
+	if err != nil {
+		writeHTTPResponseFromString(w, http.StatusInternalServerError, err.Error())
+	}
+
+	fmt.Fprintf(w, "%s", jResult)
+}
+
+func getQuotas(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	if !validateAuthorizationHeader(w, r) {
+		return
+	}
+
+	vars := mux.Vars(r)
+
+	log.Trace("Requested projectID: ", vars["projectID"])
 
 	id, doesKeyExist := vars["projectID"]
 	if !doesKeyExist || len(id) == 0 {
@@ -71,7 +114,7 @@ func getQuota(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	result, err := engine.GetQuota(id)
+	result, err := engine.GetQuotas(id)
 	if err != nil {
 		writeHTTPResponseFromString(w, http.StatusInternalServerError, err.Error())
 	}

@@ -175,9 +175,23 @@ var restRoutes = routes{
 	},
 
 	route{
+		"GetQuotas",
+		strings.ToUpper("Get"),
+		"/my-lab/quotas/",
+		getQuota,
+	},
+
+	route{
+		"GetQuotas",
+		strings.ToUpper("Get"),
+		"/my-lab/quotas/{projectID}",
+		getQuota,
+	},
+
+	route{
 		"GetQuota",
 		strings.ToUpper("Get"),
-		"/my-lab/quota/{projectID}",
+		"/my-lab/quota/{regionID}/{projectID}",
 		getQuota,
 	},
 

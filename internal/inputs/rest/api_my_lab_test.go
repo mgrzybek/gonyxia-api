@@ -86,8 +86,9 @@ func createRequest(t *testing.T, method, url string) *http.Request {
 
 func createRouter() *mux.Router {
 	router := mux.NewRouter().StrictSlash(true)
-	router.HandleFunc("/my-lab/quota/{projectID}", getQuota)
 	router.HandleFunc("/my-lab/quota/", getQuota)
+	router.HandleFunc("/my-lab/quota/{projectID}", getQuotas)
+	router.HandleFunc("/my-lab/quota/{regionID}/{projectID}", getQuota)
 
 	if !already {
 		http.Handle("/", router)
@@ -103,8 +104,8 @@ func bodyToString(body io.Reader) string {
 	return buf.String()
 }
 
-// TestGetQuotaWithoutNamespace checks that HTTP 501 is returned
-func TestGetQuotaWithoutNamespace(t *testing.T) {
+// TestGetQuotaWithoutRegion checks that HTTP 501 is returned
+func TestGetQuotaWithoutRegion(t *testing.T) {
 	w := httptest.NewRecorder()
 	req := createRequest(t, http.MethodGet, "/my-lab/quota/")
 
@@ -121,7 +122,7 @@ func TestGetQuotaWithoutNamespace(t *testing.T) {
 // TestGetQuotaWithUnknownNamespace checks that HTTP 404 is returned
 func TestGetQuotaWithUnknownNamespace(t *testing.T) {
 	w := httptest.NewRecorder()
-	req := createRequest(t, http.MethodGet, "/my-lab/quota/unknown")
+	req := createRequest(t, http.MethodGet, "/my-lab/quota/kub/unknown")
 
 	createRouter().ServeHTTP(w, req)
 	if w.Result().StatusCode != 404 {

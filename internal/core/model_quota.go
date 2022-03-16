@@ -14,3 +14,6 @@ type Quota struct {
 
 	CountPods int64 `json:"count/pods,omitempty"`
 }
+
+// QuotaPerRegion designates a list of quotas using the region they belong to
+type QuotaPerRegion map[string]Quota

@@ -8,7 +8,7 @@ import (
 
 // Engine is the main core object of the program.
 type Engine struct {
-	regions  []Region
+	regions  Regions
 	catalogs []Catalog
 }
 
@@ -24,7 +24,13 @@ func NewEngine(r []Region, c []Catalog) (Engine, error) {
 	}
 
 	return Engine{
-		regions:  r,
+		regions: func(region []Region) Regions {
+			result := Regions{}
+			for i := range region {
+				result[region[i].ID] = region[i]
+			}
+			return result
+		}(r),
 		catalogs: c,
 	}, err
 }
@@ -48,14 +54,15 @@ func (e Engine) GetCatalogByID(id string) *Catalog {
 }
 
 // GetRegions returns an array of the configured regions
-func (e Engine) GetRegions() []Region {
+func (e Engine) GetRegions() (result []Region) {
 	r := e.regions
 
-	for i := range r {
-		r[i].Services.Driver = nil
+	for _, v := range r {
+		result = append(result, v)
+		result[len(result)-1].Services.Driver = nil
 	}
 
-	return r
+	return result
 }
 
 // Health returns an array of errors is a region is unhealthy
@@ -76,8 +83,8 @@ func (e Engine) Health() (result []error) {
 	return result
 }
 
-// GetQuota provides the Quota objects for each region
-func (e Engine) GetQuota(projectID string) (result []Quota, err error) {
+// GetQuotas provides the Quota objects for each region
+func (e Engine) GetQuotas(projectID string) (result QuotaPerRegion, err error) {
 	if len(projectID) == 0 {
 		return result, fmt.Errorf("projectID is empty")
 	}
@@ -96,9 +103,50 @@ func (e Engine) GetQuota(projectID string) (result []Quota, err error) {
 			log.Trace("project not found, skipping error…")
 			err = nil
 		} else {
-			result = append(result, r)
+			result[e.regions[i].Name] = r
 		}
 	}
 
 	return result, err
+}
+
+// GetQuota provides the Quota object for the given project in a region
+func (e Engine) GetQuota(projectID, regionID string) (result Quota, err error) {
+	if len(projectID) == 0 {
+		return result, fmt.Errorf("projectID is empty")
+	}
+
+	if len(regionID) == 0 {
+		return result, fmt.Errorf("regionID is empty")
+	}
+
+	r, doesKeyExist := e.regions[regionID]
+	if !doesKeyExist {
+		return result, fmt.Errorf("regionID not found")
+	}
+
+	return r.Services.Driver.GetQuota(projectID)
+}
+
+// SetQuota sets the given quota in all regions that provides the project
+func (e Engine) SetQuota(quota Quota, projectID string) (err error) {
+	if len(projectID) == 0 {
+		return fmt.Errorf("projectID is empty")
+	}
+
+	existingQuotas, err := e.GetQuotas(projectID)
+	if err != nil {
+		return err
+	}
+
+	for r, q := range existingQuotas {
+		if q != quota {
+			err := e.regions[r].Services.Driver.SetQuota(quota, projectID)
+			if err != nil {
+				return err
+			}
+		}
+	}
+
+	return nil
 }
