@@ -8,10 +8,14 @@ import (
 	"fmt"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 
+	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
+
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 
 	"github.com/mgrzybek/gonyxia-api/internal/core"
 
@@ -20,7 +24,9 @@ import (
 
 // Kubernetes implements the OrchestratorAdaptor interface
 type Kubernetes struct {
+	// TODO: refactor in order to use only dynamic.Interface
 	clientset *kubernetes.Clientset
+	client    dynamic.Interface
 }
 
 /*
@@ -46,8 +52,14 @@ func NewKubernetes(configFilePath *string) (Kubernetes, error) {
 		log.Error(err.Error())
 	}
 
+	client, err := dynamic.NewForConfig(config)
+	if err != nil {
+		log.Error(err.Error())
+	}
+
 	result := Kubernetes{
 		clientset: clientset,
+		client:    client,
 	}
 
 	return result, result.Health()
@@ -162,4 +174,45 @@ func (k Kubernetes) GetQuota(namespaceID string) (core.Quota, error) {
 		RequestsStorage: reqStorage.String(),
 		CountPods:       cPods.Value(),
 	}, err
+}
+
+// SetQuota sets (create or update) quotas to the given namespace
+func (k Kubernetes) SetQuota(q core.Quota, namespaceID string) error {
+	quotaRes := schema.GroupVersionResource{
+		Group:    "apps",
+		Version:  "v1",
+		Resource: "ResourceQuota",
+	}
+	quota := &unstructured.Unstructured{
+		Object: map[string]interface{}{
+			"apiVersion": "v1",
+			"kind":       "ResourceQuota",
+			"metadata": map[string]interface{}{
+				"name": namespaceID + "-quota",
+			},
+			"spec": map[string]interface{}{
+				"hard": map[string]interface{}{
+					"RequestMemory":   q.RequestsMemory,
+					"ResquestCPU":     q.RequestsCPU,
+					"LimitsMemory":    q.LimitsMemory,
+					"LimitsCPU":       q.LimitsCPU,
+					"RequestsStorage": q.RequestsStorage,
+					"CountPods":       q.CountPods,
+				},
+			},
+		},
+	}
+
+	log.Debug("Setting quota…")
+	result, err := k.client.Resource(quotaRes).Namespace(namespaceID).Update(
+		context.TODO(),
+		quota,
+		metav1.UpdateOptions{},
+	)
+	if err != nil {
+		return err
+	}
+	log.Debug("Quota updated: ", result)
+
+	return nil
 }
