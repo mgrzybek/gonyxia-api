@@ -1,4 +1,5 @@
 BINARY      = onyxia-api
+GO_VERSION  = 1.18
 LAST_COMMIT = $(shell git rev-parse HEAD)
 
 .PHONY: help
@@ -17,9 +18,9 @@ help: ## This help message
 	sudo apt update \
     && sudo apt -y install pre-commit golint \
     && \
-	wget https://golang.org/dl/go1.17.linux-amd64.tar.gz \
-    && sudo tar -zxvf go1.17.linux-amd64.tar.gz -C /usr/local/ \
-    && rm -f go1.17.linux-amd64.tar.gz \
+	wget https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz \
+    && sudo tar -zxvf go${GO_VERSION}.linux-amd64.tar.gz -C /usr/local/ \
+    && rm -f go${GO_VERSION}.linux-amd64.tar.gz \
     && echo "export PATH=/usr/local/go/bin:${PATH}" | sudo tee /etc/profile.d/go.sh \
     && echo "export PATH=/usr/local/go/bin:${PATH}" | sudo tee -a ${HOME}/.profile \
     && echo "\nPlease reload your .profile file to get an updated PATH" )
