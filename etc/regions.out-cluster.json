@@ -50,7 +50,18 @@
       }
     },
     "auth": {
-      "type": "openidconnect"
+      "type": "openidconnect",
+      "realm": "",
+      "resource": "",
+      "auth-server-url": "",
+      "redirect-server-url": "",
+      "client-id": "",
+      "client-secret": "",
+      "ssl-required": "external",
+      "public-client": true,
+      "enable-basic-auth": true,
+      "bearer-only": true,
+      "disable-trust-manager": false
     },
     "location": {
       "name": "Paris",

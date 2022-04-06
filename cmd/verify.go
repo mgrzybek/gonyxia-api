@@ -3,6 +3,7 @@ package cmd
 import (
 	"encoding/json"
 	"io/ioutil"
+	"os"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -122,6 +123,8 @@ func loadRegionsFile(f string) []core.Region {
 
 		if regions[i].Auth.AuthType == "openidconnect" {
 			log.Trace("Loading openidconnect configuration…")
+
+			loadAuthDataFromEnv(regions[i].Auth)
 			regions[i].Auth.Driver, err = backoffice.NewOpenIDConnect(
 				regions[i].Auth,
 			)
@@ -133,6 +136,33 @@ func loadRegionsFile(f string) []core.Region {
 	}
 
 	return regions
+}
+
+func loadAuthDataFromEnv(a *core.Auth) {
+	if a.Realm == "" {
+		log.Trace("Loading Realm from env…")
+		a.Realm = os.Getenv("AUTH_REALM")
+	}
+	if a.Resource == "" {
+		log.Trace("Loading Resource from env…")
+		a.Resource = os.Getenv("AUTH_RESOURCE")
+	}
+	if a.AuthServerURL == "" {
+		log.Trace("Loading Auth Server URL from env…")
+		a.AuthServerURL = os.Getenv("AUTH_SERVER_URL")
+	}
+	if a.RedirectURL == "" {
+		log.Trace("Loading Redirect URL from env…")
+		a.RedirectURL = os.Getenv("AUTH_REDIRECT_URL")
+	}
+	if a.ClientID == "" {
+		log.Trace("Loading Client ID from env…")
+		a.ClientID = os.Getenv("AUTH_CLIENT_ID")
+	}
+	if a.ClientSecret == "" {
+		log.Trace("Loading Client Secret from env…")
+		a.ClientSecret = os.Getenv("AUTH_CLIENT_SECRET")
+	}
 }
 
 func verifyRun(cmd *cobra.Command) error {
