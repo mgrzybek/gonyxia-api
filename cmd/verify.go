@@ -102,7 +102,7 @@ func loadRegionsFile(f string) []core.Region {
 		log.Fatal("cannot load regions configuration: ", err)
 	}
 
-	log.Trace("Regions from configuration: ", regions)
+	log.Trace("Regions struct from configuration: ", regions)
 
 	if len(regions) == 0 {
 		log.Fatal("the regions are empty")
@@ -111,12 +111,24 @@ func loadRegionsFile(f string) []core.Region {
 	log.Info(len(regions), " region(s) loaded")
 
 	for i := range regions {
+		log.Trace("Loading Kubernetes configuration…")
 		regions[i].Services.Driver, err = backoffice.NewKubernetes(
 			regions[i].Services.Server.ConfigFile,
 		)
 
 		if err != nil {
 			log.Panic("Cannot create Kubernetes connection: ", err)
+		}
+
+		if regions[i].Auth.AuthType == "openidconnect" {
+			log.Trace("Loading openidconnect configuration…")
+			regions[i].Auth.Driver, err = backoffice.NewOpenIDConnect(
+				regions[i].Auth,
+			)
+		}
+
+		if err != nil {
+			log.Panic("Cannot create auth provider connection: ", err)
 		}
 	}
 

@@ -17,3 +17,9 @@ type OrchestratorAdapter interface {
 	GetQuota(namespaceID string) (Quota, error)
 	SetQuota(quota Quota, namespaceID string) error
 }
+
+// IdentityManagerAdaptor is the interface that represents the backoffice used to
+// manage IDs (users, passwords, token validation…)
+type IdentityManagerAdaptor interface {
+	GetUserInfoFromBearerToken(token string) (OnyxiaUser, error)
+}

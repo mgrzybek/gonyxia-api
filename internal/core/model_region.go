@@ -15,6 +15,8 @@ type Region struct {
 	OnyxiaAPI *onyxiaAPI `json:"onyxiaAPI,omitempty"`
 
 	Data *data `json:"data,omitempty"`
+
+	Auth *Auth
 }
 
 // Regions designates a list of regions using their name
