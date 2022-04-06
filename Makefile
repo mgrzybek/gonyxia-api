@@ -41,7 +41,7 @@ get: /usr/local/go/bin/go ## Download required modules
 	go get ./...
 
 onyxia-api: test ## Test and build the program
-	go build -o onyxia-api main.go
+	go build -o ${BINARY} main.go
 
 ##############################################################################
 # Vagrant
@@ -97,7 +97,7 @@ run-out-cluster: onyxia-api ## Run the server on 127.0.0.1:8081 using out-cluste
 
 .PHONY: clean
 clean: ## Delete produced artifacts
-	rm -f onyxia-api
+	rm -f ${BINARY}
 
 .PHONY: all
 all: get onyxia-api ## Test and build
