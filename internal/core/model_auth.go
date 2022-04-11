@@ -3,17 +3,17 @@ package core
 // Auth is used to interact with an identity provider
 type Auth struct {
 	AuthType            string `json:"type"`
-	Realm               string `json:"string:realm"`
-	Resource            string `json:"string:resource"`
-	AuthServerURL       string `json:"string:auth-server-url"`
-	RedirectURL         string `json:"string:redirect-server-url"`
-	ClientID            string `json:"string:client-id"`
-	ClientSecret        string `json:"string:client-secret"`
-	SSLRequired         string `json:"string:ssl-required"`
-	PublicClient        bool   `json:"bool:public-client"`
-	EnableBasicAuth     bool   `json:"bool:enable-basic-auth"`
-	BearerOnly          bool   `json:"bool:bearer-only"`
-	DisableTrustManager bool   `json:"bool:disable-trust-manager"`
+	Realm               string `json:"realm"`
+	Resource            string `json:"resource"`
+	AuthServerURL       string `json:"auth-server-url"`
+	RedirectURL         string `json:"redirect-server-url"`
+	ClientID            string `json:"client-id"`
+	ClientSecret        string `json:"client-secret"`
+	SSLRequired         string `json:"ssl-required"`
+	PublicClient        bool   `json:"public-client"`
+	EnableBasicAuth     bool   `json:"enable-basic-auth"`
+	BearerOnly          bool   `json:"bearer-only"`
+	DisableTrustManager bool   `json:"disable-trust-manager"`
 
 	Driver IdentityManagerAdaptor
 }
