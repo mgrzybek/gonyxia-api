@@ -181,13 +181,13 @@ func verifyRun(cmd *cobra.Command) error {
 	configureLogger(logLevel, logFormat)
 
 	/*
-	 * Business options: regions
+	 * Business options: regions
 	 */
 	regionsJSON, _ := cmd.Flags().GetString("regions-json")
 	loadRegionsFile(regionsJSON)
 
 	/*
-	 * Business options: catalogs
+	 * Business options: catalogs
 	 */
 	catalogsJSON, _ := cmd.Flags().GetString("catalogs-json")
 	loadCatalogsFile(catalogsJSON)
