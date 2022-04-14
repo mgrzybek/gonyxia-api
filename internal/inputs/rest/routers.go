@@ -64,7 +64,9 @@ func logger(inner http.Handler, name string) http.Handler {
 }
 
 func writeHTTPResponseFromString(w http.ResponseWriter, status int, message string) {
-	w.WriteHeader(status)
+	if status != http.StatusOK {
+		w.WriteHeader(status)
+	}
 	result := make(map[string]string)
 	result["message"] = message
 	jmsg, _ := writeJSONResponse(result)
